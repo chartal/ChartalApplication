@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ChartalApplication</string>
+    <string name="name_author1">Robert Downey Jr.</string>
+    <string name="name_author2">Chris Evans</string>
+    <string name="name_author3">Mark Ruffalo</string>
+    <string name="name_author4">Chris Hemsworth</string>
+    <string name="movie_description">Action, Adventure, Fantasy</string>
+    <string name="movie_review">125 REVIEWS</string>
+    <string name="storyline">Storyline</string>
+    <string name="details">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe. </string>
+    <string name="cast">Cast</string>
+    <string name="age">13+</string>
+    <string name="back">Back</string>
+    <string name="movie_title">Avengers:\nEnd Game</string>
 </resources>

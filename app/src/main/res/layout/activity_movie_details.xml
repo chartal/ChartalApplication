@@ -28,9 +28,9 @@
         android:text="@string/back"
         android:textColor="@color/tv_back_textColor"
         android:textSize="@dimen/tv_back_textSize"
+        app:drawableStartCompat="@drawable/ic_path"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:drawableStartCompat="@drawable/ic_path" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_horizontal1"
@@ -77,13 +77,13 @@
 
     <RatingBar
         android:id="@+id/rating_bar"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        style="?android:attr/ratingBarStyleSmall"
-        android:theme="@style/MyRatingBar"
         android:numStars="5"
         android:rating="4"
+        android:theme="@style/MyRatingBar"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/tv_movie_description" />
 
@@ -271,7 +271,6 @@
         app:layout_constraintEnd_toEndOf="@id/iv_author4"
         app:layout_constraintStart_toStartOf="@id/iv_author4"
         app:layout_constraintTop_toBottomOf="@id/iv_author4" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

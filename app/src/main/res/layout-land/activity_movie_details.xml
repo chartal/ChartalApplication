@@ -23,28 +23,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_ic_path"
-            android:layout_width="@dimen/iv_ic_path_width"
-            android:layout_height="@dimen/iv_ic_path_height"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="59dp"
-            android:src="@drawable/ic_path"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/tv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/tv_back_margin_start"
+            android:layout_marginTop="@dimen/tv_back_margin_top"
             android:gravity="top"
             android:text="@string/back"
             android:textColor="@color/tv_back_textColor"
             android:textSize="@dimen/tv_back_textSize"
-            app:layout_constraintBottom_toBottomOf="@id/iv_ic_path"
-            app:layout_constraintStart_toEndOf="@id/iv_ic_path"
-            app:layout_constraintTop_toTopOf="@id/iv_ic_path" />
+            app:drawableStartCompat="@drawable/ic_path"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier1"
@@ -91,13 +82,13 @@
 
         <RatingBar
             android:id="@+id/rating_bar"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            style="?android:attr/ratingBarStyleSmall"
-            android:theme="@style/MyRatingBar"
             android:numStars="5"
             android:rating="4"
+            android:theme="@style/MyRatingBar"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tv_movie_description" />
 
@@ -113,6 +104,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/rating_bar"
             app:layout_constraintStart_toEndOf="@id/rating_bar"
             app:layout_constraintTop_toTopOf="@+id/rating_bar" />
+
         <TextView
             android:id="@+id/tv_storyline"
             android:layout_width="wrap_content"

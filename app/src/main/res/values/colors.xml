@@ -13,4 +13,6 @@
     <color name="movie_details">#FFFFFF</color>
     <color name="tv_back_textColor">#6D6D80</color>
     <color name="storyline">#ECECEC</color>
+    <color name="rating_bar_normal">#6D6D80</color>
+    <color name="rating_bar_activated">#FF3365</color>
 </resources>

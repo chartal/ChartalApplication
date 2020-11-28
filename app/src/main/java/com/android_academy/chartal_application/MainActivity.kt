@@ -1,27 +1,37 @@
 package com.android_academy.chartal_application
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.android_academy.chartal_application.databinding.ActivityMainBinding
+import com.android_academy.chartal_application.details.FragmentMoviesDetails
+import com.android_academy.chartal_application.details.FragmentMoviesList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FragmentMoviesList.TransactionsFragmentClicks {
 
+    private lateinit var binding: ActivityMainBinding
+    private val rootFragment = FragmentMoviesList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val textView: TextView = findViewById(R.id.tvHelloWorld)
-        textView.setOnClickListener {
-            movieToNextScreen()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .apply {
+                    add(R.id.fragment_container, rootFragment)
+                    commit()
+                }
         }
 
+
     }
 
-    private fun movieToNextScreen() {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        startActivity(intent)
+    override fun addFragmentMoviesDetails() {
+        val fragment = FragmentMoviesDetails.newInstance()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
-
 
 }

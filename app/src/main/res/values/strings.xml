@@ -12,4 +12,9 @@
     <string name="age">13+</string>
     <string name="back">Back</string>
     <string name="movie_title">Avengers:\nEnd Game</string>
+    <string name="tv_movies_list_text">Movies list</string>
+    <string name="avengers_end_game">Avengers: End Game</string>
+    <string name="fr_tv_age_text">13+</string>
+    <string name="tv_time">137 MIN</string>
+    <string name="fr_tv_movie_description">Action, Adventure, Drama</string>
 </resources>

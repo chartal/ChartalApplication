@@ -30,7 +30,7 @@
     <dimen name="tv_movies_list_text_size">14sp</dimen>
     <dimen name="tv_movies_list_margin_top">55dp</dimen>
     <dimen name="gv_vertical_start_margin">14dp</dimen>
-    <dimen name="tv_movies_list_margin_start">2dp</dimen>
+    <dimen name="tv_movies_list_margin_start">16dp</dimen>
     <dimen name="tv_movies_list_margin_bottom">10dp</dimen>
     <dimen name="card_view_corner_radius">5dp</dimen>
     <dimen name="card_view_card_elevation">2dp</dimen>
@@ -49,4 +49,5 @@
     <dimen name="margin_t">2dp</dimen>
     <dimen name="tv_time_text_size">12sp</dimen>
     <dimen name="text_size_min">8sp</dimen>
+    <dimen name="tv_movies_list_margin_top_land">40dp</dimen>
 </resources>

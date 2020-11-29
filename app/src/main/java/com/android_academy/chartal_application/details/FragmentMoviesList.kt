@@ -52,15 +52,8 @@ class FragmentMoviesList : Fragment() {
         listener = null
     }
 
-
     interface TransactionsFragmentClicks {
         fun addFragmentMoviesDetails()
-    }
-
-    companion object {
-        fun newInstance(): FragmentMoviesList {
-            return FragmentMoviesList()
-        }
     }
 
 }

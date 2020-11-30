@@ -20,27 +20,14 @@ class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
     override fun addFragmentMoviesDetails() {
         val fragment = FragmentMoviesDetails()
         supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, fragment)
+            .replace(R.id.fragment_container, fragment)
             .addToBackStack(null)
             .commit()
     }
 
     override fun addFragmentMoviesList() {
-        onBackPressed()
+        supportFragmentManager.popBackStack()
     }
 
-    override fun onBackPressed() {
-        val lastFragment = supportFragmentManager.fragments.last()
-        if (lastFragment is FragmentMoviesList) {
-            super.onBackPressed()
-        }
-        if (lastFragment is FragmentMoviesDetails) {
-            supportFragmentManager.beginTransaction()
-                .remove(lastFragment)
-                .commit()
-        } else {
-            super.onBackPressed()
-        }
-    }
 
 }

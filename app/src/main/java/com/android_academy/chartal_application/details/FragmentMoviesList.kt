@@ -52,8 +52,6 @@ class FragmentMoviesList : Fragment() {
         listener = null
     }
 
-    interface TransactionsFragmentClicks {
-        fun addFragmentMoviesDetails()
-    }
+
 
 }

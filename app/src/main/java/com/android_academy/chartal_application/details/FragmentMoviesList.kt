@@ -6,14 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.android_academy.chartal_application.adapters.MovieAdapter
+import com.android_academy.chartal_application.repository.DataStorage
+import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
 
 
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
+    private val movieAdapter = MovieAdapter(this)
 
 
     override fun onCreateView(
@@ -36,9 +40,14 @@ class FragmentMoviesList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.cardView.setOnClickListener {
-            listener?.addFragmentMoviesDetails()
+
+        binding.rvMovies?.apply {
+            adapter = movieAdapter
+            setHasFixedSize(true)
         }
+            loadMovies()
+
+
     }
 
     override fun onDestroyView() {
@@ -52,6 +61,16 @@ class FragmentMoviesList : Fragment() {
         listener = null
     }
 
+    override fun oItemClicked(movie: Movie) {
+        listener?.addFragmentMoviesDetails(movie)
+    }
+
+
+
+
+    private fun loadMovies()  {
+        movieAdapter.addItems(DataStorage.getMoviesList())
+    }
 
 
 }

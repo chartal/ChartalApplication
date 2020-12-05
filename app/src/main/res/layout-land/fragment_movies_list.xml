@@ -42,7 +42,7 @@
                 app:layout_constraintGuide_percent="0.83" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/fr_iv_poster"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:foreground="@drawable/mask"
@@ -90,7 +90,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/tv_avengers"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_s"
@@ -100,13 +100,13 @@
                 android:textColor="@color/storyline"
                 android:textSize="@dimen/tv_avengers_text_size"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/tv_time"
+                app:layout_constraintBottom_toTopOf="@id/fr_tv_time"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/gl_card_view_horizontal" />
 
             <TextView
-                android:id="@+id/tv_time"
+                android:id="@+id/fr_tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_s"
@@ -117,7 +117,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_avengers" />
+                app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
             <TextView
                 android:id="@+id/fr_tv_movie_description"
@@ -144,7 +144,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/tv_movie_review"
+                android:id="@+id/fr_tv_movie_review"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:gravity="center_vertical"

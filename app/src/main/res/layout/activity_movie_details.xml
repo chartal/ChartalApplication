@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_movie_description" />
 
     <TextView
-        android:id="@+id/tv_movie_review"
+        android:id="@+id/fr_tv_movie_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/tv_MovieReview_marginStart"
@@ -108,7 +108,7 @@
         android:textColor="@color/storyline"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/tv_movie_review" />
+        app:layout_constraintTop_toBottomOf="@id/fr_tv_movie_review" />
 
     <TextView
         android:id="@+id/tv_details"

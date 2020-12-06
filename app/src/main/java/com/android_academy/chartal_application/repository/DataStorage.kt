@@ -18,24 +18,24 @@ object DataStorage {
                 4.0F,
                 listOf(
                     Actor(
-                        R.drawable.movie,
-                        "Robert Downey Jr Robert Downey Jr"
+                        R.drawable.actor1_1,
+                        "Robert Downey Jr"
                     ),
                     Actor(
-                        R.drawable.author2,
+                        R.drawable.actor1_2,
                         "Chris Evans"
                     ),
                     Actor(
-                        R.drawable.author3,
+                        R.drawable.actor1_3,
                         "Mark Ruffalo"
                     ),
                     Actor(
-                        R.drawable.author4,
+                        R.drawable.actor1_4,
                         "Chris Hemsworth"
                     )
                 ),
                 R.drawable.movie,
-                R.drawable.origin,
+                R.drawable.movie1_big,
                 "137 MIN",
                 false
             ),
@@ -69,7 +69,7 @@ object DataStorage {
                     )
                 ),
                 R.drawable.movie2,
-                R.drawable.tenet_big,
+                R.drawable.movie2_big,
                 "97 MIN",
                 true
             ),
@@ -103,7 +103,7 @@ object DataStorage {
                     )
                 ),
                 R.drawable.movie3,
-                R.drawable.black_widow,
+                R.drawable.movie3_big,
                 "102 MIN",
                 false
             ),
@@ -137,7 +137,7 @@ object DataStorage {
                     )
                 ),
                 R.drawable.movie4,
-                R.drawable.woman_good,
+                R.drawable.movie4_big,
                 "120 MIN",
                 false
             )

@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.android_academy.chartal_application.adapters.MovieAdapter
-import com.android_academy.chartal_application.repository.DataStorage
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
+import com.android_academy.chartal_application.repository.DataStorage
 
 
 class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
@@ -29,7 +29,6 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         return binding.root
     }
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity != null && activity is TransactionsFragmentClicks) {
@@ -37,24 +36,19 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.rvMovies?.apply {
             adapter = movieAdapter
             setHasFixedSize(true)
         }
-            loadMovies()
-
-
+        loadMovies()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 
     override fun onDetach() {
         super.onDetach()
@@ -65,12 +59,8 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         listener?.addFragmentMoviesDetails(movie)
     }
 
-
-
-
-    private fun loadMovies()  {
+    private fun loadMovies() {
         movieAdapter.addItems(DataStorage.getMoviesList())
     }
-
 
 }

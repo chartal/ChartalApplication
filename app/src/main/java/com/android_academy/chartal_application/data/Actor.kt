@@ -8,4 +8,4 @@ import kotlinx.android.parcel.Parcelize
 data class Actor(
     @DrawableRes val image: Int,
     val name: String
-): Parcelable
+) : Parcelable

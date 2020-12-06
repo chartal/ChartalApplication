@@ -50,4 +50,6 @@
     <dimen name="tv_time_text_size">12sp</dimen>
     <dimen name="text_size_min">8sp</dimen>
     <dimen name="tv_movies_list_margin_top_land">40dp</dimen>
+    <dimen name="card_view_movie_padding">6dp</dimen>
+    <dimen name="card_view_author_padding">2dp</dimen>
 </resources>

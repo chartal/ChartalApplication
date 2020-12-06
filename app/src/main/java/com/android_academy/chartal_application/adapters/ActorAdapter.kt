@@ -11,14 +11,13 @@ import com.android_academy.chartal_application.R
 import com.android_academy.chartal_application.data.Actor
 
 
-
 class ActorAdapter() :
     RecyclerView.Adapter<ActorAdapter.ActorViewHolder>() {
 
     val items = mutableListOf<Actor>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.actor_item, null)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.actor_item, parent, false)
         return ActorViewHolder(view)
     }
 
@@ -39,9 +38,7 @@ class ActorAdapter() :
 
         fun bind(actor: Actor) {
             itemView.findViewById<ImageView>(R.id.iv_actor).setImageResource(actor.image)
-            //itemView.findViewById<TextView>(R.id.tv_actor_full_name).text = actor.name
-            //itemView.findViewById<TextView>(R.id.tv_actor_full_name).text = "'yy"
-
+            itemView.findViewById<TextView>(R.id.tv_full_actor_name).text = actor.name
         }
     }
 }

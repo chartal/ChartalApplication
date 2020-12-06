@@ -41,25 +41,18 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         binding.tvBack.setOnClickListener {
             listener?.addFragmentMoviesList()
         }
-        binding.rvDetails?.apply{
-            adapter = actorAdapter
-            //setHasFixedSize(true)
-        }
+        binding.rvDetails?.adapter = actorAdapter
 
-        this.
-        arguments?.getParcelable<Movie>(ARGS_MOVIE)?.let {
+        this.arguments?.getParcelable<Movie>(ARGS_MOVIE)?.let {
             binding.tvMovieTitle.text = it.title
             binding.tvMovieDescription.text = it.description
             binding.ratingBar.rating = it.rating
             binding.tvAge.text = it.age
-            binding.ivBackground .setImageResource(it.backdropRes)
+            binding.ivBackground.setImageResource(it.backdropRes)
             binding.frTvMovieReview.text = it.review
             binding.tvDetails.text = it.overview
             loadActors(it.listActors)
         }
-
-
-
     }
 
 
@@ -73,19 +66,17 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         listener = null
     }
 
-    private fun loadActors(actors: List<Actor>){
+    private fun loadActors(actors: List<Actor>) {
         actorAdapter.addItems(actors)
     }
-
 
     companion object {
         private const val ARGS_MOVIE = "ARGS_MOVIE"
         fun newInstance(movie: Movie): FragmentMoviesDetails {
-            return FragmentMoviesDetails().apply{
+            return FragmentMoviesDetails().apply {
                 arguments = bundleOf(ARGS_MOVIE to movie)
             }
         }
     }
-
 
 }

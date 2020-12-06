@@ -1,9 +1,8 @@
 package com.android_academy.chartal_application.data
 
-import androidx.annotation.DrawableRes
-
 
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -19,5 +18,4 @@ data class Movie(
     @DrawableRes val backdropRes: Int,
     val time: String,
     val favorite: Boolean
-    ):Parcelable
-
+) : Parcelable

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.android_academy.chartal_application.adapters.ActorAdapter
 import com.android_academy.chartal_application.adapters.MovieAdapter
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
@@ -17,7 +18,9 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
-    private val movieAdapter = MovieAdapter(this)
+    private val movieAdapter by lazy{
+        MovieAdapter(this)
+    }
 
 
     override fun onCreateView(

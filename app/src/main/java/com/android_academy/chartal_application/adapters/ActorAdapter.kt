@@ -14,12 +14,14 @@ import com.android_academy.chartal_application.data.Actor
 class ActorAdapter() :
     RecyclerView.Adapter<ActorAdapter.ActorViewHolder>() {
 
-    val items = mutableListOf<Actor>()
+    private val items = mutableListOf<Actor>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.actor_item, parent, false)
         return ActorViewHolder(view)
     }
+
+
 
     override fun getItemCount(): Int {
         return items.size
@@ -34,11 +36,14 @@ class ActorAdapter() :
         notifyDataSetChanged()
     }
 
-    inner class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+     class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val poster = itemView.findViewById<ImageView>(R.id.iv_actor)
+        private val actorFullName = itemView.findViewById<TextView>(R.id.tv_full_actor_name)
 
         fun bind(actor: Actor) {
-            itemView.findViewById<ImageView>(R.id.iv_actor).setImageResource(actor.image)
-            itemView.findViewById<TextView>(R.id.tv_full_actor_name).text = actor.name
+            poster.setImageResource(actor.image)
+            actorFullName.text = actor.name
         }
     }
 }

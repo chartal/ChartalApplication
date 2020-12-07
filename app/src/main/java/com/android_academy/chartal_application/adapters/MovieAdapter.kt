@@ -14,7 +14,7 @@ import com.android_academy.chartal_application.data.Movie
 class MovieAdapter(private val clickListener: Listener) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    val items = mutableListOf<Movie>()
+    private val items = mutableListOf<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_holder_movie, null)
@@ -40,22 +40,37 @@ class MovieAdapter(private val clickListener: Listener) :
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(movie: Movie) {
-            itemView.setOnClickListener {
-                clickListener.oItemClicked(movie)
-            }
+        private val age = itemView.findViewById<TextView>(R.id.fr_tv_age)
+        private val poster = itemView.findViewById<ImageView>(R.id.fr_iv_poster)
+        private val title = itemView.findViewById<TextView>(R.id.tv_title)
+        private val description = itemView.findViewById<TextView>(R.id.fr_tv_movie_description)
+        private val review = itemView.findViewById<TextView>(R.id.fr_tv_movie_review)
+        private val ratingBar = itemView.findViewById<RatingBar>(R.id.fr_rating_bar)
+        private val time = itemView.findViewById<TextView>(R.id.fr_tv_time)
+        private val favorite = itemView.findViewById<ImageView>(R.id.iv_baseline_favorite)
 
-            itemView.findViewById<TextView>(R.id.fr_tv_age).text = movie.age
-            itemView.findViewById<ImageView>(R.id.fr_iv_poster).setImageResource(movie.posterRes)
-            itemView.findViewById<TextView>(R.id.tv_title).text = movie.title
-            itemView.findViewById<TextView>(R.id.fr_tv_movie_description).text = movie.description
-            itemView.findViewById<TextView>(R.id.fr_tv_movie_review).text = movie.review
-            itemView.findViewById<RatingBar>(R.id.fr_rating_bar).rating = movie.rating
-            itemView.findViewById<TextView>(R.id.fr_tv_time).text = movie.time
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    clickListener.oItemClicked(items[position])
+                }
+            }
+        }
+
+        fun bind(movie: Movie) {
+
+            age.text = movie.age
+            poster.setImageResource(movie.posterRes)
+            title.text = movie.title
+            description.text = movie.description
+            review.text = movie.review
+            ratingBar.rating = movie.rating
+            time.text = movie.time
             if(movie.favorite){
-                itemView.findViewById<ImageView>(R.id.iv_baseline_favorite).setImageResource(R.drawable.ic_baseline_favorite_true_24)
+                favorite.setImageResource(R.drawable.ic_baseline_favorite_true_24)
             }else{
-                itemView.findViewById<ImageView>(R.id.iv_baseline_favorite).setImageResource(R.drawable.ic_baseline_favorite_24)
+                favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             }
 
         }

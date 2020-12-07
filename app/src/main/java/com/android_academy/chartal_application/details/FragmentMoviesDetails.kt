@@ -18,7 +18,9 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
-    private val actorAdapter = ActorAdapter()
+    private val actorAdapter by lazy{
+        ActorAdapter()
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

@@ -110,19 +110,28 @@
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/fr_tv_movie_review" />
 
-    <TextView
-        android:id="@+id/tv_details"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/tv_details_marginTop"
         android:layout_marginBottom="@dimen/tv_details_marginBottom"
-        android:text="@string/details"
-        android:textColor="@color/movie_details"
-        android:textSize="@dimen/tv_details_text_size"
         app:layout_constraintBottom_toTopOf="@id/gl_horizontal2"
         app:layout_constraintEnd_toStartOf="@id/guideline_end"
         app:layout_constraintStart_toEndOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/tv_storyline" />
+        app:layout_constraintTop_toBottomOf="@id/tv_storyline">
+
+        <TextView
+            android:id="@+id/tv_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:text="@string/details"
+            android:textColor="@color/movie_details"
+            android:textSize="@dimen/tv_details_text_size" />
+
+    </ScrollView>
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_horizontal2"

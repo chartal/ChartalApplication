@@ -12,14 +12,15 @@ import com.android_academy.chartal_application.adapters.ActorAdapter
 import com.android_academy.chartal_application.data.Actor
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMovieDetailsBinding
+import com.bumptech.glide.Glide
 
-class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
+class FragmentMoviesDetails1 : Fragment(R.layout.fragment_movie_details) {
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
-    private val actorAdapter by lazy{
-        ActorAdapter()
+    private val actorAdapter by lazy {
+        ActorAdapter(requireContext())
     }
 
     override fun onAttach(context: Context) {
@@ -43,17 +44,26 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         binding.tvBack.setOnClickListener {
             listener?.addFragmentMoviesList()
         }
-        binding.rvDetails?.adapter = actorAdapter
+        binding.rvDetails.adapter = actorAdapter
 
         this.arguments?.getParcelable<Movie>(ARGS_MOVIE)?.let {
             binding.tvMovieTitle.text = it.title
-            binding.tvMovieDescription.text = it.description
-            binding.ratingBar.rating = it.rating
-            binding.tvAge.text = it.age
-            binding.ivBackground.setImageResource(it.backdropRes)
-            binding.frTvMovieReview.text = it.review
+            binding.tvMovieDescription.text = it.genres.joinToString()
+            binding.ratingBar.rating = it.ratings
+            binding.tvAge.text = it.minimumAge.toString()+"+"
+            binding.frTvMovieReview.text = it.numberOfRatings.toString()
             binding.tvDetails.text = it.overview
-            loadActors(it.listActors)
+            if (it.actors.isNotEmpty()) {
+                loadActors(it.actors)
+            } else {
+                binding.tvCast.visibility = View.INVISIBLE
+            }
+
+            Glide
+                .with(requireContext())
+                .load(it.backdrop)
+                .into(binding.ivBackground)
+
         }
     }
 
@@ -68,14 +78,14 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         listener = null
     }
 
-    private fun loadActors(actors: List<Actor>) {
-        actorAdapter.addItems(actors)
+    private fun loadActors(myActors: List<Actor>) {
+        actorAdapter.addItems(myActors)
     }
 
     companion object {
         private const val ARGS_MOVIE = "ARGS_MOVIE"
-        fun newInstance(movie: Movie): FragmentMoviesDetails {
-            return FragmentMoviesDetails().apply {
+        fun newInstance(movie: Movie): FragmentMoviesDetails1 {
+            return FragmentMoviesDetails1().apply {
                 arguments = bundleOf(ARGS_MOVIE to movie)
             }
         }

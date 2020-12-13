@@ -1,15 +1,15 @@
 package com.android_academy.chartal_application.repository
 
 import com.android_academy.chartal_application.R
-import com.android_academy.chartal_application.data.Actor
-import com.android_academy.chartal_application.data.Movie
+import com.android_academy.chartal_application.adapters.MyActor
+import com.android_academy.chartal_application.adapters.MyMovie
 
 object DataStorage {
 
-    fun getMoviesList(): List<Movie> {
+    fun getMoviesList(): List<MyMovie> {
 
         return listOf(
-            Movie(
+            MyMovie(
                 "Avengers: End Game",
                 "Action, Adventure, Drama",
                 "125 reviews",
@@ -17,19 +17,19 @@ object DataStorage {
                 "13+",
                 4.0F,
                 listOf(
-                    Actor(
+                    MyActor(
                         R.drawable.actor1_1,
                         "Robert Downey Jr"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor1_2,
                         "Chris Evans"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor1_3,
                         "Mark Ruffalo"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor1_4,
                         "Chris Hemsworth"
                     )
@@ -39,7 +39,7 @@ object DataStorage {
                 "137 MIN",
                 false
             ),
-            Movie(
+            MyMovie(
                 "Tenet",
                 "Action, Sci-Fi, Thriller",
                 "98 reviews",
@@ -47,23 +47,23 @@ object DataStorage {
                 "16+",
                 5.0F,
                 listOf(
-                    Actor(
+                    MyActor(
                         R.drawable.actor2_1,
                         "John David Washington"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor2_2,
                         "Robert Pattinson"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor2_3,
                         "Elizabeth Debicki"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor2_4,
                         "Dimple Kapadia"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor2_5,
                         "Martin Donovan"
                     )
@@ -73,7 +73,7 @@ object DataStorage {
                 "97 MIN",
                 true
             ),
-            Movie(
+            MyMovie(
                 "Black Widow",
                 "Action, Adventure, Sci-Fi",
                 "38 reviews",
@@ -81,23 +81,23 @@ object DataStorage {
                 "13+",
                 4.0F,
                 listOf(
-                    Actor(
+                    MyActor(
                         R.drawable.actor3_1,
                         "Scarlett Johansson"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor3_2,
                         "Florence Pugh"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor3_3,
                         "David Harbour"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor3_4,
                         "O. T. Fagbenle"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor3_5,
                         "William Hurt"
                     )
@@ -107,7 +107,7 @@ object DataStorage {
                 "102 MIN",
                 false
             ),
-            Movie(
+            MyMovie(
                 "Wonder Woman 1984",
                 "Action, Adventure, Fantasy",
                 "74 reviews",
@@ -115,23 +115,23 @@ object DataStorage {
                 "13+",
                 5.0F,
                 listOf(
-                    Actor(
+                    MyActor(
                         R.drawable.actor5_1,
                         "Gal Gadot"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor5_2,
                         "Chris Pine"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor5_3,
                         "Kristen Wiig"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor5_4,
                         "Pedro Pascal"
                     ),
-                    Actor(
+                    MyActor(
                         R.drawable.actor5_5,
                         "Robin Wright"
                     )

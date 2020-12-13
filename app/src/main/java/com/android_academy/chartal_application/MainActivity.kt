@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.ActivityMainBinding
-import com.android_academy.chartal_application.details.FragmentMoviesDetails
+import com.android_academy.chartal_application.details.FragmentMoviesDetails1
 import com.android_academy.chartal_application.details.TransactionsFragmentClicks
+
 
 class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
     override fun addFragmentMoviesDetails(movie: Movie) {
         supportFragmentManager
             .beginTransaction()
-            .replace(android.R.id.content, FragmentMoviesDetails.newInstance(movie))
+            .replace(android.R.id.content, FragmentMoviesDetails1.newInstance(movie))
             .addToBackStack(null)
             .commit()
     }

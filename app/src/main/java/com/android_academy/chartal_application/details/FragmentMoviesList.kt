@@ -6,14 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.android_academy.chartal_application.adapters.ActorAdapter
+import com.android_academy.chartal_application.adapters.MovieAdapter
+import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
+import com.android_academy.chartal_application.repository.DataStorage
 
 
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
+    private val movieAdapter by lazy{
+        MovieAdapter(this)
+    }
 
 
     override fun onCreateView(
@@ -25,7 +32,6 @@ class FragmentMoviesList : Fragment() {
         return binding.root
     }
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity != null && activity is TransactionsFragmentClicks) {
@@ -33,12 +39,13 @@ class FragmentMoviesList : Fragment() {
         }
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.cardView.setOnClickListener {
-            listener?.addFragmentMoviesDetails()
+        binding.rvMovies?.apply {
+            adapter = movieAdapter
+            setHasFixedSize(true)
         }
+        loadMovies()
     }
 
     override fun onDestroyView() {
@@ -46,12 +53,17 @@ class FragmentMoviesList : Fragment() {
         _binding = null
     }
 
-
     override fun onDetach() {
         super.onDetach()
         listener = null
     }
 
+    override fun oItemClicked(movie: Movie) {
+        listener?.addFragmentMoviesDetails(movie)
+    }
 
+    private fun loadMovies() {
+        movieAdapter.addItems(DataStorage.getMoviesList())
+    }
 
 }

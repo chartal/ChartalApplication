@@ -5,14 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".MovieDetailsActivity">
 
     <ImageView
         android:id="@+id/iv_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:foreground="@drawable/maks_background"
         android:scaleType="centerCrop"
-        android:src="@drawable/origin"
+        android:src="@drawable/movie1_big"
         app:layout_constraintBottom_toTopOf="@id/gl_horizontal1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,11 +59,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
+        android:paddingEnd="100dp"
         android:text="@string/movie_title"
         android:textColor="@color/storyline"
         android:textSize="@dimen/tv_movie_title_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/gl_horizontal1"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toTopOf="@id/gl_horizontal1" />
 
@@ -88,7 +93,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_movie_description" />
 
     <TextView
-        android:id="@+id/tv_movie_review"
+        android:id="@+id/fr_tv_movie_review"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/tv_MovieReview_marginStart"
@@ -108,7 +113,7 @@
         android:textColor="@color/storyline"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/tv_movie_review" />
+        app:layout_constraintTop_toBottomOf="@id/fr_tv_movie_review" />
 
     <TextView
         android:id="@+id/tv_details"
@@ -116,6 +121,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/tv_details_marginTop"
         android:layout_marginBottom="@dimen/tv_details_marginBottom"
+        android:scrollbars="vertical"
         android:text="@string/details"
         android:textColor="@color/movie_details"
         android:textSize="@dimen/tv_details_text_size"
@@ -149,127 +155,26 @@
         app:layout_constraintGuide_begin="@dimen/margin" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_left_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_right_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/margin" />
 
-    <ImageView
-        android:id="@+id/iv_author1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/iv_author_margin_top"
-        android:src="@drawable/author1"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_left_center"
-        app:layout_constraintStart_toEndOf="@+id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cast" />
 
-    <ImageView
-        android:id="@+id/iv_author2"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_details"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/iv_author2_margin_start"
-        android:layout_marginTop="@dimen/iv_author_margin_top"
-        android:layout_marginEnd="@dimen/iv_author2_marginEnd"
-        android:src="@drawable/author2"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_center"
-        app:layout_constraintStart_toEndOf="@+id/guideline_left_center"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cast" />
-
-    <ImageView
-        android:id="@+id/iv_author3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/iv_author3_margin_start"
-        android:layout_marginTop="@dimen/iv_author_margin_top"
-        android:layout_marginEnd="@dimen/iv_author3_margin_end"
-        android:src="@drawable/author3"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_right_center"
-        app:layout_constraintStart_toEndOf="@+id/guideline_center"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cast" />
-
-    <ImageView
-        android:id="@+id/iv_author4"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/iv_author_margin_top"
-        android:src="@drawable/author4"
-        app:layout_constraintDimensionRatio="1:1"
+        android:orientation="horizontal"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-        app:layout_constraintStart_toEndOf="@+id/guideline_right_center"
-        app:layout_constraintTop_toBottomOf="@+id/tv_cast" />
+        app:layout_constraintStart_toEndOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/tv_cast"
+        tools:listitem="@layout/actor_item" />
 
-    <TextView
-        android:id="@+id/tv_author1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tv_author_margin_top"
-        android:text="@string/name_author1"
-        android:textColor="@color/white"
-        android:textSize="@dimen/author_text_size"
-        app:layout_constraintEnd_toEndOf="@id/iv_author1"
-        app:layout_constraintStart_toStartOf="@id/iv_author1"
-        app:layout_constraintTop_toBottomOf="@id/iv_author1" />
-
-    <TextView
-        android:id="@+id/tv_author2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tv_author_margin_top"
-        android:text="@string/name_author2"
-        android:textColor="@color/white"
-        android:textSize="@dimen/author_text_size"
-        app:layout_constraintEnd_toEndOf="@id/iv_author2"
-        app:layout_constraintStart_toStartOf="@id/iv_author2"
-        app:layout_constraintTop_toBottomOf="@id/iv_author2" />
-
-    <TextView
-        android:id="@+id/tv_author3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tv_author_margin_top"
-        android:text="@string/name_author3"
-        android:textColor="@color/white"
-        android:textSize="@dimen/author_text_size"
-        app:layout_constraintEnd_toEndOf="@id/iv_author3"
-        app:layout_constraintStart_toStartOf="@id/iv_author3"
-        app:layout_constraintTop_toBottomOf="@id/iv_author3" />
-
-    <TextView
-        android:id="@+id/tv_author4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/tv_author_margin_top"
-        android:text="@string/name_author4"
-        android:textColor="@color/white"
-        android:textSize="@dimen/author_text_size"
-        app:layout_constraintEnd_toEndOf="@id/iv_author4"
-        app:layout_constraintStart_toStartOf="@id/iv_author4"
-        app:layout_constraintTop_toBottomOf="@id/iv_author4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,14 +13,14 @@ import com.android_academy.chartal_application.data.Actor
 import com.bumptech.glide.Glide
 
 
-class ActorAdapter(val context: Context) :
+class ActorAdapter() :
     RecyclerView.Adapter<ActorAdapter.ActorViewHolder>() {
 
     private val items = mutableListOf<Actor>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.actor_item, parent, false)
-        return ActorViewHolder(view)
+        return ActorViewHolder(view, parent.context)
 }
 
 
@@ -38,7 +38,7 @@ class ActorAdapter(val context: Context) :
         notifyDataSetChanged()
     }
 
-     inner class ActorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+      class ActorViewHolder(itemView: View, val context: Context) : RecyclerView.ViewHolder(itemView) {
 
         private val poster = itemView.findViewById<ImageView>(R.id.iv_actor)
         private val actorFullName = itemView.findViewById<TextView>(R.id.tv_full_actor_name)

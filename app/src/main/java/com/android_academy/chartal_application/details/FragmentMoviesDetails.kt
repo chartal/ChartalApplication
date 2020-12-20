@@ -14,13 +14,13 @@ import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMovieDetailsBinding
 import com.bumptech.glide.Glide
 
-class FragmentMoviesDetails1 : Fragment(R.layout.fragment_movie_details) {
+class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
     private val actorAdapter by lazy {
-        ActorAdapter(requireContext())
+        ActorAdapter()
     }
 
     override fun onAttach(context: Context) {
@@ -84,8 +84,8 @@ class FragmentMoviesDetails1 : Fragment(R.layout.fragment_movie_details) {
 
     companion object {
         private const val ARGS_MOVIE = "ARGS_MOVIE"
-        fun newInstance(movie: Movie): FragmentMoviesDetails1 {
-            return FragmentMoviesDetails1().apply {
+        fun newInstance(movie: Movie): FragmentMoviesDetails {
+            return FragmentMoviesDetails().apply {
                 arguments = bundleOf(ARGS_MOVIE to movie)
             }
         }

@@ -46,7 +46,7 @@ class ActorAdapter() :
         fun bind(actor: Actor) {
 
             Glide
-                .with(context)
+                .with(itemView.context)
                 .load(actor.picture)
                 .into(poster)
             actorFullName.text = actor.name

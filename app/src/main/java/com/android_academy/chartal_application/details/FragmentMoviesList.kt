@@ -5,31 +5,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.android_academy.chartal_application.adapters.MovieAdapter
-import com.android_academy.chartal_application.data.Movie
-import com.android_academy.chartal_application.data.loadMovies
-import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
-import kotlinx.coroutines.*
+import android.widget.Toast
 
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import com.android_academy.chartal_application.adapters.MovieAdapter
+import com.android_academy.chartal_application.data.App
+import com.android_academy.chartal_application.data.Movie
+import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
+import com.android_academy.chartal_application.util.ResProvider
 
 class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
+    private val resProvider = ResProvider(App.instance)
+    private val detailsViewModel: DetailsViewModel by viewModels { DetailsViewModelFactory(resProvider) }
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
-    private val movieAdapter by lazy{
-        MovieAdapter(requireContext(), this)
+    private val movieAdapter by lazy {
+        MovieAdapter(this)
     }
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
-        println("CoroutineExceptionHandler got $exception in $coroutineContext")
-    }
-    private var scope = CoroutineScope(
-        SupervisorJob() +
-                Dispatchers.Main +
-                exceptionHandler
-    )
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,9 +47,9 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
         binding.rvMovies.apply {
             adapter = movieAdapter
-
         }
-        scope.launch { movieAdapter.addItems(loadMovies(requireContext())) }
+        initErrorHandler()
+        loadFilms()
     }
 
     override fun onDestroyView() {
@@ -66,9 +62,19 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         listener = null
     }
 
-    override fun oItemClicked (movie: Movie) {
+    override fun oItemClicked(movie: Movie) {
         listener?.addFragmentMoviesDetails(movie)
     }
 
+    private fun initErrorHandler() {
+        detailsViewModel.error.observe(viewLifecycleOwner, Observer { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        })
+    }
 
+    private fun loadFilms() {
+        detailsViewModel.items.observe(viewLifecycleOwner, Observer {
+            movieAdapter.addItems(it!!)
+        })
+    }
 }

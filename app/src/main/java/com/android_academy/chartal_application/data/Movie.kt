@@ -1,21 +1,20 @@
 package com.android_academy.chartal_application.data
 
-
 import android.os.Parcelable
-import androidx.annotation.DrawableRes
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
+
 
 @Parcelize
 data class Movie(
+    val id: Int,
     val title: String,
-    val description: String,
-    val review: String,
     val overview: String,
-    val age: String,
-    var rating: Float,
-    val listActors: List<Actor>,
-    @DrawableRes val posterRes: Int,
-    @DrawableRes val backdropRes: Int,
-    val time: String,
-    val favorite: Boolean
-) : Parcelable
+    val poster: String,
+    val backdrop: String,
+    val ratings: Float,
+    val numberOfRatings: Int,
+    val minimumAge: Int,
+    val runtime: Int,
+    val genres: List<Genre>,
+    val actors: List<Actor>
+): Parcelable

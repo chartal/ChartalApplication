@@ -7,6 +7,7 @@ import com.android_academy.chartal_application.databinding.ActivityMainBinding
 import com.android_academy.chartal_application.details.FragmentMoviesDetails
 import com.android_academy.chartal_application.details.TransactionsFragmentClicks
 
+
 class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
 
     private lateinit var binding: ActivityMainBinding

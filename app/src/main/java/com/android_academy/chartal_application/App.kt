@@ -1,4 +1,4 @@
-package com.android_academy.chartal_application.data
+package com.android_academy.chartal_application
 
 import android.app.Application
 

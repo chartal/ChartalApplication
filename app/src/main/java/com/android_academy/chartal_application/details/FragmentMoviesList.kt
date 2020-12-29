@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.android_academy.chartal_application.adapters.MovieAdapter
-import com.android_academy.chartal_application.data.App
+import com.android_academy.chartal_application.App
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
 import com.android_academy.chartal_application.util.ResProvider

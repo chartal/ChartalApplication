@@ -7,9 +7,9 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.android_academy.chartal_application.R
 import com.android_academy.chartal_application.data.Movie
-import com.bumptech.glide.Glide
 
 
 class MovieAdapter(private val clickListener: Listener) :
@@ -29,15 +29,20 @@ class MovieAdapter(private val clickListener: Listener) :
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(items[position])
+        if (position == (itemCount-1)) {
+            clickListener.onListScrolled()
+        }
     }
 
     fun addItems(newItems: List<Movie>) {
+        items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
     }
 
     interface Listener {
         fun oItemClicked(movie: Movie)
+        fun onListScrolled()
     }
 
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,7 +56,6 @@ class MovieAdapter(private val clickListener: Listener) :
         private val time = itemView.findViewById<TextView>(R.id.fr_tv_time)
         private val favorite = itemView.findViewById<ImageView>(R.id.iv_baseline_favorite)
 
-
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
@@ -62,11 +66,7 @@ class MovieAdapter(private val clickListener: Listener) :
         }
 
         fun bind(movie: Movie) {
-            Glide
-                .with(itemView.context)
-                .load(movie.poster)
-                .into(poster)
-
+            poster.load(movie.poster)
             age.text = movie.minimumAge.toString()+"+"
             title.text = movie.title
             description.text = movie.genres.joinToString()
@@ -78,7 +78,6 @@ class MovieAdapter(private val clickListener: Listener) :
             } else {
                 favorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             }
-
         }
     }
 }

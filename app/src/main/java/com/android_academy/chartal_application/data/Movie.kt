@@ -1,8 +1,8 @@
 package com.android_academy.chartal_application.data
 
 import android.os.Parcelable
+import com.android_academy.chartal_application.api.Genre1
 import kotlinx.parcelize.Parcelize
-
 
 @Parcelize
 data class Movie(
@@ -16,5 +16,5 @@ data class Movie(
     val minimumAge: Int,
     val runtime: Int,
     val genres: List<Genre>,
-    val actors: List<Actor>
+    var actors: List<Actor>
 ): Parcelable

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MovieDetailsActivity">
+    tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/tv_age_textSize"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/barrier1"
+            app:layout_constraintBottom_toTopOf="@id/tv_movie_title"
             app:layout_constraintStart_toStartOf="@id/guideline_start" />
 
         <TextView
@@ -92,7 +92,6 @@
             android:theme="@style/MyRatingBar"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/tv_movie_description" />
-
 
         <TextView
             android:id="@+id/fr_tv_movie_review"
@@ -154,7 +153,6 @@
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/margin" />
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_details"
             android:layout_width="match_parent"
@@ -168,7 +166,6 @@
             app:layout_constraintStart_toEndOf="@+id/guideline_start"
             app:layout_constraintTop_toBottomOf="@+id/tv_cast"
             tools:listitem="@layout/actor_item" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,6 +1,5 @@
 package com.android_academy.chartal_application.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.android_academy.chartal_application.data.Movie
 import com.bumptech.glide.Glide
 
 
-class MovieAdapter(val context: Context, private val clickListener: Listener) :
+class MovieAdapter(private val clickListener: Listener) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     private val items = mutableListOf<Movie>()
@@ -64,7 +63,7 @@ class MovieAdapter(val context: Context, private val clickListener: Listener) :
 
         fun bind(movie: Movie) {
             Glide
-                .with(context)
+                .with(itemView.context)
                 .load(movie.poster)
                 .into(poster)
 

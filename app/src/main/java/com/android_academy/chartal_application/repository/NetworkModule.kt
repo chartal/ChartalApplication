@@ -10,6 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 
 private const val BASE_URL = "https://api.themoviedb.org/3/"
+const val apiKey = "e21bbf9fde1ed4eb09d04d9215a495df"
 
 object NetworkModule {
 

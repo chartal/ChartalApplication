@@ -35,7 +35,6 @@ class MoviesViewModel(private val filmsRepository: FilmsRepository, private val 
             try {
                 isProgressBarVisibleMutableLiveData.value = true
                 myList.addAll(filmsRepository.getListOfFilms(page))
-
                 _items.value = myList
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES

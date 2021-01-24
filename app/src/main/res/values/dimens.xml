@@ -52,4 +52,9 @@
     <dimen name="tv_movies_list_margin_top_land">40dp</dimen>
     <dimen name="card_view_movie_padding">6dp</dimen>
     <dimen name="card_view_author_padding">2dp</dimen>
+    <dimen name="fab_width">56dp</dimen>
+    <dimen name="fab_height">56dp</dimen>
+    <dimen name="fab_max_image_size">40dp</dimen>
+    <dimen name="search_view_margin">6dp</dimen>
+    <dimen name="search_view_height">30dp</dimen>
 </resources>

@@ -1,24 +1,39 @@
 package com.android_academy.chartal_application.details
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import coil.load
 import com.android_academy.chartal_application.R
 import com.android_academy.chartal_application.adapters.ActorAdapter
 import com.android_academy.chartal_application.data.Actor
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMovieDetailsBinding
-import com.bumptech.glide.Glide
+import com.android_academy.chartal_application.repository.NetworkModule
+
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
+
+
+    private val detailsViewModel: DetailsViewModel by viewModels {
+        DetailsViewModelFactory(
+            NetworkModule.filmsRepository
+        )
+    }
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
+    private var movieId = 0
     private val actorAdapter by lazy {
         ActorAdapter()
     }
@@ -45,28 +60,37 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
             listener?.addFragmentMoviesList()
         }
         binding.rvDetails.adapter = actorAdapter
-
         this.arguments?.getParcelable<Movie>(ARGS_MOVIE)?.let {
+            movieId = it.id
             binding.tvMovieTitle.text = it.title
             binding.tvMovieDescription.text = it.genres.joinToString()
             binding.ratingBar.rating = it.ratings
-            binding.tvAge.text = it.minimumAge.toString()+"+"
+            binding.tvAge.text = it.minimumAge.toString() + "+"
             binding.frTvMovieReview.text = it.numberOfRatings.toString()
             binding.tvDetails.text = it.overview
-            if (it.actors.isNotEmpty()) {
-                loadActors(it.actors)
-            } else {
-                binding.tvCast.visibility = View.INVISIBLE
+            binding.ivBackground.load(it.backdrop) {
+                placeholder(R.drawable.chartal_placeholder)
             }
-
-            Glide
-                .with(requireContext())
-                .load(it.backdrop)
-                .into(binding.ivBackground)
-
+            if (savedInstanceState == null) {
+                detailsViewModel.loadActors(it.id)
+            }
         }
+        detailsViewModel.actors.observe(viewLifecycleOwner, Observer { list ->
+            loadActors(list)
+            if (list.isEmpty()) {
+                binding.tvCast.visibility = View.INVISIBLE
+            } else {
+                binding.tvCast.visibility = View.VISIBLE
+            }
+        })
+        detailsViewModel.trailerUrlMutableLiveData.observe(viewLifecycleOwner, Observer { trailer ->
+            openMovie(trailer)
+        })
+        binding.fab?.setOnClickListener {
+            detailsViewModel.getTrailer(movieId)
+        }
+        initErrorHandler()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -82,6 +106,17 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         actorAdapter.addItems(myActors)
     }
 
+    private fun openMovie(url: String?) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
+    }
+
+    private fun initErrorHandler() {
+        detailsViewModel.error.observe(viewLifecycleOwner, Observer { errorMessage ->
+            Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+        })
+    }
+
     companion object {
         private const val ARGS_MOVIE = "ARGS_MOVIE"
         fun newInstance(movie: Movie): FragmentMoviesDetails {
@@ -90,5 +125,4 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
             }
         }
     }
-
 }

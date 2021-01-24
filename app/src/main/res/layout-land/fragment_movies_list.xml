@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
-
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_horizontal_top"
@@ -29,7 +27,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/gv_vertical_start_margin" />
 
-
     <TextView
         android:id="@+id/tv_movies_list"
         android:layout_width="wrap_content"
@@ -44,20 +41,39 @@
         android:textStyle="bold"
         app:drawableStartCompat="@drawable/combined_shape"
         app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_top"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_start"
-        />
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_start" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/search_view_height"
+        android:layout_marginStart="@dimen/search_view_margin"
+        android:layout_marginEnd="@dimen/search_view_margin"
+        android:background="@drawable/corners"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
+        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_top"
+        app:layout_constraintStart_toEndOf="@id/tv_movies_list" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movies"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_top"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_start"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
-        tools:listitem="@layout/view_holder_movie"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_start"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_top"
+        tools:listitem="@layout/view_holder_movie" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_start"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_top" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

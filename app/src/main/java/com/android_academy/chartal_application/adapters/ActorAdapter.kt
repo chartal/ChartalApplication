@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.android_academy.chartal_application.R
 import com.android_academy.chartal_application.data.Actor
-import com.bumptech.glide.Glide
 
 
 class ActorAdapter() :
@@ -43,10 +43,7 @@ class ActorAdapter() :
         private val actorFullName = itemView.findViewById<TextView>(R.id.tv_full_actor_name)
 
         fun bind(actor: Actor) {
-            Glide
-                .with(itemView.context)
-                .load(actor.picture)
-                .into(poster)
+            poster.load(actor.picture)
             actorFullName.text = actor.name
         }
     }

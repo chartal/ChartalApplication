@@ -6,20 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.android_academy.chartal_application.adapters.MovieAdapter
 import com.android_academy.chartal_application.App
+import com.android_academy.chartal_application.adapters.MovieAdapter
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
+import com.android_academy.chartal_application.repository.NetworkModule
 import com.android_academy.chartal_application.util.ResProvider
 
 class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
     private val resProvider = ResProvider(App.instance)
-    private val detailsViewModel: DetailsViewModel by viewModels { DetailsViewModelFactory(resProvider) }
+    private val moviesViewModel: MoviesViewModel by viewModels {
+        MoviesViewModelFactory(
+            NetworkModule.filmsRepository,
+            resProvider
+        )
+    }
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
@@ -49,7 +56,20 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
             adapter = movieAdapter
         }
         initErrorHandler()
+        initProgressBar()
         loadFilms()
+        binding.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+                return true
+            }
+            override fun onQueryTextSubmit(query: String): Boolean {
+                moviesViewModel.getSearchMovie(query)
+                return true
+            }
+        })
+        binding.tvMoviesList.setOnClickListener {
+            moviesViewModel.getDefaultList()
+        }
     }
 
     override fun onDestroyView() {
@@ -66,15 +86,25 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         listener?.addFragmentMoviesDetails(movie)
     }
 
+    override fun onListScrolled() {
+        moviesViewModel.addNextListOfMovies()
+    }
+
     private fun initErrorHandler() {
-        detailsViewModel.error.observe(viewLifecycleOwner, Observer { errorMessage ->
+        moviesViewModel.error.observe(viewLifecycleOwner, Observer { errorMessage ->
             Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
         })
     }
 
     private fun loadFilms() {
-        detailsViewModel.items.observe(viewLifecycleOwner, Observer {
-            movieAdapter.addItems(it!!)
+        moviesViewModel.items.observe(viewLifecycleOwner, Observer {
+            movieAdapter.addItems(it)
+        })
+    }
+
+    private fun initProgressBar() {
+        moviesViewModel.isProgressBarVisible.observe(viewLifecycleOwner, Observer {
+            binding.progressBar.isVisible = it
         })
     }
 }

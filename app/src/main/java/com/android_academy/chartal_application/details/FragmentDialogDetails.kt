@@ -5,28 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentDialogDetailsBinding
-import com.android_academy.chartal_application.room.UserDatabase
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
 
 
-class FragmentDialogDetails(val movie: Movie?) : DialogFragment() {
+class FragmentDialogDetails(private val listener: onClickSaveListener) : DialogFragment() {
 
     private var _binding: FragmentDialogDetailsBinding? = null
     private val binding get() = _binding!!
-
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
-        println("CoroutineExceptionHandler got $exception in $coroutineContext")
-    }
-    private var scope = CoroutineScope(
-        SupervisorJob() +
-                Dispatchers.Main +
-                exceptionHandler
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,13 +26,7 @@ class FragmentDialogDetails(val movie: Movie?) : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnOk.setOnClickListener {
-            Toast.makeText(context, "Movie saved in database", Toast.LENGTH_SHORT).show()
-            scope.launch {
-                withContext(IO) {
-                    val db = UserDatabase.getDatabase(requireContext())
-                    db.filmDao().insert(movie)
-                }
-            }
+            listener.saveData()
             dismiss()
         }
         binding.btnCancel.setOnClickListener {
@@ -69,4 +49,9 @@ class FragmentDialogDetails(val movie: Movie?) : DialogFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    interface  onClickSaveListener{
+        fun saveData()
+    }
+
 }

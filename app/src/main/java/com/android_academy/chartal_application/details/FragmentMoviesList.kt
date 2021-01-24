@@ -16,15 +16,18 @@ import com.android_academy.chartal_application.adapters.MovieAdapter
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
 import com.android_academy.chartal_application.repository.NetworkModule
+import com.android_academy.chartal_application.util.NetworkStatus
 import com.android_academy.chartal_application.util.ResProvider
 
 class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
     private val resProvider = ResProvider(App.instance)
+    private val networkStatus = NetworkStatus(App.instance)
     private val moviesViewModel: MoviesViewModel by viewModels {
         MoviesViewModelFactory(
             NetworkModule.filmsRepository,
-            resProvider
+            resProvider,
+            networkStatus
         )
     }
     private var _binding: FragmentMoviesListBinding? = null

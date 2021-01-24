@@ -26,4 +26,8 @@ interface FilmDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(film: Movie?): Long
+
+    @Query("SELECT 1 from films LIMIT 1")
+    fun isDatabaseEmpty(): Int
+
 }

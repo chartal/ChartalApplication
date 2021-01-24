@@ -3,7 +3,6 @@ package com.android_academy.chartal_application.repository
 import com.android_academy.chartal_application.App
 import com.android_academy.chartal_application.api.TheMovieDb
 import com.android_academy.chartal_application.room.AppDatabase
-import com.android_academy.chartal_application.room.UserDatabase
 import com.android_academy.chartal_application.util.DataConverter
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -21,8 +20,7 @@ object NetworkModule {
         FilmsRepository(
             createTmdbServiceApi(),
             DataConverter(),
-            AppDatabase.getDatabase(App.instance),
-            UserDatabase.getDatabase(App.instance)
+            AppDatabase.getDatabase(App.instance)
         )
     }
 

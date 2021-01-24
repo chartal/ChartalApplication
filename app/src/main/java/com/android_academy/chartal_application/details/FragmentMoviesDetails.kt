@@ -21,15 +21,14 @@ import com.android_academy.chartal_application.databinding.FragmentMovieDetailsB
 import com.android_academy.chartal_application.repository.NetworkModule
 
 
-class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
-
+class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details), FragmentDialogDetails.onClickSaveListener {
 
     private val detailsViewModel: DetailsViewModel by viewModels {
         DetailsViewModelFactory(
             NetworkModule.filmsRepository
         )
     }
-    private var movie: Movie? =null
+    private var movie: Movie? = null
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
@@ -93,7 +92,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         }
         initErrorHandler()
         binding.btnDialog?.setOnClickListener {
-            val dialog = FragmentDialogDetails(movie)
+            val dialog = FragmentDialogDetails(listener = this)
             dialog.show(childFragmentManager, "FragmentDialogDetails")
         }
     }
@@ -130,5 +129,10 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
                 arguments = bundleOf(ARGS_MOVIE to movie)
             }
         }
+    }
+
+    override fun saveData() {
+        Toast.makeText(context, "Movie saved in database", Toast.LENGTH_SHORT).show()
+        detailsViewModel.saveUserMovie(movie)
     }
 }

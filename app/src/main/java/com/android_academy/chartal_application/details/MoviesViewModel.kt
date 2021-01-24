@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.repository.FilmsRepository
 import com.android_academy.chartal_application.util.IResProvider
+import com.android_academy.chartal_application.util.NetworkStatus
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,7 +18,8 @@ private const val LOG_TAG = "Chartal"
 
 class MoviesViewModel(
     private val filmsRepository: FilmsRepository,
-    private val resProvider: IResProvider
+    private val resProvider: IResProvider,
+    private val networkStatus: NetworkStatus
 ) : ViewModel() {
 
     private val _items = MutableLiveData<List<Movie>>()
@@ -35,9 +37,8 @@ class MoviesViewModel(
     private var page: Int = 1
     private val myList = mutableListOf<Movie>()
     private var pagination = true
-    private val internetNoAccess by lazy {
-        !resProvider.internetConnectionStatus()
-    }
+    private val internetNoAccess: Boolean
+        get() = !networkStatus.internetConnectionStatus()
 
     init {
         viewModelScope.launch {
@@ -79,7 +80,7 @@ class MoviesViewModel(
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES
             } finally {
-                isProgressBarVisibleMutableLiveData.value = false
+                isProgressBarVisibleMutableLiveData.postValue(false)
             }
         }
     }

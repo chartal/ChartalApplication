@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android_academy.chartal_application.data.Actor
 import com.android_academy.chartal_application.repository.FilmsRepository
-import com.android_academy.chartal_application.repository.NetworkModule
 import kotlinx.coroutines.launch
 
 

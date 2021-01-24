@@ -70,6 +70,9 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         binding.tvMoviesList.setOnClickListener {
             moviesViewModel.getDefaultList()
         }
+        binding.ivBtnToBd.setOnClickListener {
+            moviesViewModel.getListOfMovieFromUserDatabase()
+        }
     }
 
     override fun onDestroyView() {

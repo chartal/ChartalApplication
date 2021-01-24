@@ -1,18 +1,24 @@
 package com.android_academy.chartal_application.details
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.repository.FilmsRepository
-
 import com.android_academy.chartal_application.util.IResProvider
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val ERROR_LOAD_MOVIES = "Error load movies"
+private const val LOG_TAG = "Chartal"
 
-class MoviesViewModel(private val filmsRepository: FilmsRepository, private val resProvider: IResProvider) : ViewModel() {
+class MoviesViewModel(
+    private val filmsRepository: FilmsRepository,
+    private val resProvider: IResProvider
+) : ViewModel() {
 
     private val _items = MutableLiveData<List<Movie>>()
     val items: LiveData<List<Movie>> get() = _items
@@ -28,14 +34,48 @@ class MoviesViewModel(private val filmsRepository: FilmsRepository, private val 
 
     private var page: Int = 1
     private val myList = mutableListOf<Movie>()
-    private var flag = true
+    private var pagination = true
+    private val internetNoAccess by lazy {
+        !resProvider.internetConnectionStatus()
+    }
 
     init {
         viewModelScope.launch {
             try {
-                isProgressBarVisibleMutableLiveData.value = true
-                myList.addAll(filmsRepository.getListOfFilms(page))
-                _items.value = myList
+                if (internetNoAccess) {
+                    Log.d(LOG_TAG, "There is no Internet access, local data will be downloaded")
+                    pagination = false
+                    withContext(IO) {
+                        if (filmsRepository.isCacheEmpty()) {
+                            Log.d(
+                                LOG_TAG,
+                                "The cache is empty, data will be loaded from the local JSON"
+                            )
+                            isProgressBarVisibleMutableLiveData.postValue(true)
+                            myList.addAll(resProvider.loadFilms())
+                        } else {
+                            Log.d(LOG_TAG, "Loading data from a database")
+                            myList.addAll(filmsRepository.getListOfFilmsFromCache())
+                        }
+                        _items.postValue(myList)
+                    }
+                } else {
+                    Log.d(LOG_TAG, "There is  Internet access")
+                    withContext(IO) {
+                        if (!filmsRepository.isCacheEmpty()) {
+                            Log.d(LOG_TAG, "Loading data from the cache")
+                            myList.addAll(filmsRepository.getListOfFilmsFromCache())
+                            _items.postValue(myList)
+                        }
+                    }
+                    Log.d(LOG_TAG, "Downloading data from the network")
+                    myList.clear()
+                    myList.addAll(filmsRepository.getListOfFilms(page))
+                    _items.postValue(myList)
+                    Log.d(LOG_TAG, "Saving data to the cache")
+                    filmsRepository.clearCache()
+                    filmsRepository.fillCache(myList)
+                }
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES
             } finally {
@@ -45,21 +85,24 @@ class MoviesViewModel(private val filmsRepository: FilmsRepository, private val 
     }
 
     fun getSearchMovie(query: String) {
-        flag = false
+        pagination = false
         viewModelScope.launch {
             try {
+                isProgressBarVisibleMutableLiveData.value = true
                 myList.clear()
                 myList.addAll(filmsRepository.getListOfFilms2(query))
                 _items.value = myList
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES
+            } finally {
+                isProgressBarVisibleMutableLiveData.value = false
             }
         }
     }
 
-    fun getDefaultList(){
-        page=1
-        flag=true
+    fun getDefaultList() {
+        page = 1
+        pagination = true
         myList.clear()
         viewModelScope.launch {
             try {
@@ -74,8 +117,24 @@ class MoviesViewModel(private val filmsRepository: FilmsRepository, private val 
         }
     }
 
+    fun getListOfMovieFromUserDatabase() {
+        pagination = false
+        viewModelScope.launch {
+            try {
+                isProgressBarVisibleMutableLiveData.value = true
+                myList.clear()
+                myList.addAll(filmsRepository.getListOfFilmsFromUserDatabase())
+                _items.value = myList
+            } catch (error: Throwable) {
+                _error.value = ERROR_LOAD_MOVIES
+            } finally {
+                isProgressBarVisibleMutableLiveData.value = false
+            }
+        }
+    }
+
     fun addNextListOfMovies() {
-        if (flag) {
+        if (pagination) {
             if (page <= 3) {
                 page++
                 viewModelScope.launch {

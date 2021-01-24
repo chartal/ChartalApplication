@@ -29,6 +29,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
             NetworkModule.filmsRepository
         )
     }
+    private var movie: Movie? =null
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
@@ -61,9 +62,10 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         }
         binding.rvDetails.adapter = actorAdapter
         this.arguments?.getParcelable<Movie>(ARGS_MOVIE)?.let {
+            movie = it
             movieId = it.id
             binding.tvMovieTitle.text = it.title
-            binding.tvMovieDescription.text = it.genres.joinToString()
+            binding.tvMovieDescription.text = it.genres?.joinToString()
             binding.ratingBar.rating = it.ratings
             binding.tvAge.text = it.minimumAge.toString() + "+"
             binding.frTvMovieReview.text = it.numberOfRatings.toString()
@@ -90,6 +92,10 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
             detailsViewModel.getTrailer(movieId)
         }
         initErrorHandler()
+        binding.btnDialog?.setOnClickListener {
+            val dialog = FragmentDialogDetails(movie)
+            dialog.show(childFragmentManager, "FragmentDialogDetails")
+        }
     }
 
     override fun onDestroyView() {

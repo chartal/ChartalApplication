@@ -4,13 +4,17 @@ import com.android_academy.chartal_application.api.MovieFullInfo
 import com.android_academy.chartal_application.api.TheMovieDb
 import com.android_academy.chartal_application.data.Actor
 import com.android_academy.chartal_application.data.Movie
+import com.android_academy.chartal_application.room.AppDatabase
+import com.android_academy.chartal_application.room.UserDatabase
 import com.android_academy.chartal_application.util.DataConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class FilmsRepository(
     private val tmdbApi: TheMovieDb,
-    private val converter: DataConverter
+    private val converter: DataConverter,
+    private val dataBase: AppDatabase,
+    private val userDatabase: UserDatabase
 ) {
 
     private suspend fun getListMovieFullInfo(page: Int): List<MovieFullInfo> {
@@ -55,6 +59,36 @@ class FilmsRepository(
     suspend fun getListOfFilms(page: Int): List<Movie> {
         return withContext(Dispatchers.IO) {
             converter.convertToMovie(getListMovieFullInfo(page))
+        }
+    }
+
+    suspend fun getListOfFilmsFromCache(): List<Movie>{
+        return withContext(Dispatchers.IO) {
+            dataBase.filmDao().getAll()
+        }
+    }
+
+    suspend fun isCacheEmpty(): Boolean{
+        return withContext(Dispatchers.IO) {
+            dataBase.filmDao().getAll().isEmpty()
+        }
+    }
+
+    suspend fun clearCache(){
+        return withContext(Dispatchers.IO) {
+            dataBase.filmDao().deleteAll()
+        }
+    }
+
+    suspend fun fillCache(films: List<Movie>){
+        return withContext(Dispatchers.IO) {
+            dataBase.filmDao().insertAll(films)
+        }
+    }
+
+    suspend fun getListOfFilmsFromUserDatabase(): List<Movie> {
+        return withContext(Dispatchers.IO){
+            userDatabase.filmDao().getAll()
         }
     }
 

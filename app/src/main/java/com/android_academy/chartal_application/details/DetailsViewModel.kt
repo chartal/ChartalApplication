@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android_academy.chartal_application.data.Actor
+import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.repository.FilmsRepository
-import com.android_academy.chartal_application.repository.NetworkModule
 import kotlinx.coroutines.launch
 
 
@@ -28,7 +28,7 @@ class DetailsViewModel(private val filmsRepository: FilmsRepository) : ViewModel
         viewModelScope.launch {
             try {
                 _actors.value = filmsRepository.getActors(id).take(10)
-            }catch(error: Throwable){
+            } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_ACTORS
             }
         }
@@ -43,4 +43,12 @@ class DetailsViewModel(private val filmsRepository: FilmsRepository) : ViewModel
             }
         }
     }
+
+    fun saveUserMovie(movie: Movie?) {
+        viewModelScope.launch {
+            filmsRepository.saveUserMovie(movie)
+        }
+    }
+
+
 }

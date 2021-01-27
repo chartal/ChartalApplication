@@ -6,10 +6,9 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-@Entity
-data class Actor(
+@Entity(tableName = "userfilms")
+data class UserMovie(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val name: String,
-    val picture: String
-): Parcelable
+    val id: Int?,
+    val title: String?
+) : Parcelable

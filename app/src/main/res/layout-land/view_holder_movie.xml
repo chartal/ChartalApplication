@@ -109,11 +109,12 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_s"
                 android:layout_marginTop="@dimen/tv_avengers_margin_top"
                 android:layout_marginEnd="@dimen/margin_s"
+                android:gravity="start"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@string/avengers_end_game"
@@ -122,6 +123,7 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/fr_tv_time"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:src="@tools:sample/cities" />
 
             <TextView

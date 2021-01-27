@@ -57,4 +57,5 @@
     <dimen name="fab_max_image_size">40dp</dimen>
     <dimen name="search_view_margin">6dp</dimen>
     <dimen name="search_view_height">30dp</dimen>
+    <dimen name="tv_value_text_size">16sp</dimen>
 </resources>

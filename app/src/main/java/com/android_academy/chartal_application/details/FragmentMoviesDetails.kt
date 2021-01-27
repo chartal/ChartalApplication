@@ -21,14 +21,14 @@ import com.android_academy.chartal_application.databinding.FragmentMovieDetailsB
 import com.android_academy.chartal_application.repository.NetworkModule
 
 
-class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
-
+class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details), FragmentDialogDetails.onClickSaveListener {
 
     private val detailsViewModel: DetailsViewModel by viewModels {
         DetailsViewModelFactory(
             NetworkModule.filmsRepository
         )
     }
+    private var movie: Movie? = null
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
@@ -61,9 +61,10 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         }
         binding.rvDetails.adapter = actorAdapter
         this.arguments?.getParcelable<Movie>(ARGS_MOVIE)?.let {
+            movie = it
             movieId = it.id
             binding.tvMovieTitle.text = it.title
-            binding.tvMovieDescription.text = it.genres.joinToString()
+            binding.tvMovieDescription.text = it.genres?.joinToString()
             binding.ratingBar.rating = it.ratings
             binding.tvAge.text = it.minimumAge.toString() + "+"
             binding.frTvMovieReview.text = it.numberOfRatings.toString()
@@ -90,6 +91,10 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
             detailsViewModel.getTrailer(movieId)
         }
         initErrorHandler()
+        binding.btnDialog?.setOnClickListener {
+            val dialog = FragmentDialogDetails(listener = this)
+            dialog.show(childFragmentManager, "FragmentDialogDetails")
+        }
     }
 
     override fun onDestroyView() {
@@ -124,5 +129,10 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
                 arguments = bundleOf(ARGS_MOVIE to movie)
             }
         }
+    }
+
+    override fun saveData() {
+        Toast.makeText(context, "Movie saved in database", Toast.LENGTH_SHORT).show()
+        detailsViewModel.saveUserMovie(movie)
     }
 }

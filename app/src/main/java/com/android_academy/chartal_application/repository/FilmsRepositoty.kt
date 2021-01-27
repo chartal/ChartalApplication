@@ -4,13 +4,16 @@ import com.android_academy.chartal_application.api.MovieFullInfo
 import com.android_academy.chartal_application.api.TheMovieDb
 import com.android_academy.chartal_application.data.Actor
 import com.android_academy.chartal_application.data.Movie
+import com.android_academy.chartal_application.data.UserMovie
+import com.android_academy.chartal_application.room.AppDatabase
 import com.android_academy.chartal_application.util.DataConverter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class FilmsRepository(
     private val tmdbApi: TheMovieDb,
-    private val converter: DataConverter
+    private val converter: DataConverter,
+    private val dataBase: AppDatabase
 ) {
 
     private suspend fun getListMovieFullInfo(page: Int): List<MovieFullInfo> {
@@ -57,6 +60,58 @@ class FilmsRepository(
             converter.convertToMovie(getListMovieFullInfo(page))
         }
     }
+
+    suspend fun getListOfFilmsFromCache(): List<Movie> {
+        return withContext(Dispatchers.IO) {
+            dataBase.filmDao().getAll()
+        }
+    }
+
+    suspend fun isCacheEmpty(): Boolean {
+        return withContext(Dispatchers.IO) {
+            when (dataBase.filmDao().isDatabaseEmpty()) {
+                0 -> true
+                else -> false
+            }
+        }
+    }
+
+    suspend fun clearCache() {
+        return withContext(Dispatchers.IO) {
+            dataBase.filmDao().deleteAll()
+        }
+    }
+
+    suspend fun fillCache(films: List<Movie>) {
+        return withContext(Dispatchers.IO) {
+            dataBase.filmDao().insertAll(films)
+        }
+    }
+
+
+    suspend fun getListOfFilmsFromUserDatabase(): List<Movie> {
+        return withContext(Dispatchers.IO) {
+            val list = mutableListOf<MovieFullInfo>()
+            dataBase.filmUserDao().getAll()
+                .forEach {
+                    try {
+                        list.add(tmdbApi.getMovieFullInfo(it.id!!))
+                    } catch (e: Throwable) {
+                        e.printStackTrace()
+                    }
+                }
+            converter.convertToMovie(list)
+        }
+
+    }
+
+   suspend fun saveUserMovie(movie: Movie?) {
+        withContext(Dispatchers.IO) {
+            dataBase.filmUserDao().insert(UserMovie(movie?.id, movie?.title))
+        }
+    }
+
+
 
     companion object {
         private const val BASE_POSTER_URL_PROFILE = "http://image.tmdb.org/t/p/w185"

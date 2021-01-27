@@ -17,4 +17,7 @@
     <string name="fr_tv_age_text">13+</string>
     <string name="tv_time">137 MIN</string>
     <string name="fr_tv_movie_description">Action, Adventure, Drama</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">CANCEL</string>
+    <string name="want_to_save">Want to save a movie to your favorites?</string>
 </resources>

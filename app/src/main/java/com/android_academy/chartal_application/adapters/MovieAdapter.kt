@@ -69,7 +69,7 @@ class MovieAdapter(private val clickListener: Listener) :
             poster.load(movie.poster)
             age.text = movie.minimumAge.toString()+"+"
             title.text = movie.title
-            description.text = movie.genres.joinToString()
+            description.text = movie.genres?.joinToString()
             review.text = movie.numberOfRatings.toString()
             ratingBar.rating = movie.ratings
             time.text = movie.runtime.toString() + " MIN"

@@ -21,5 +21,6 @@
     <string name="btn_cancel">CANCEL</string>
     <string name="want_to_save">Want to save a movie to your favorites?</string>
     <string name="want_to_delete">Want to delete a movie from your favorites?</string>
+    <string name="collection_is_empty">Your movie collection is empty. You can always add the selected movie to your collection.</string>
 
 </resources>

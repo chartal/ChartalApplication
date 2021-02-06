@@ -81,11 +81,19 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         binding.tvMoviesList.setOnClickListener {
             flag = true
             moviesViewModel.getDefaultList()
+            binding.ivPersonalVideo.visibility = View.INVISIBLE
+            binding.tvPersonalVideo.visibility = View.INVISIBLE
 
         }
         binding.ivBtnToBd.setOnClickListener {
             flag = false
             moviesViewModel.getListOfMovieFromUserDatabase()
+            moviesViewModel.isUserFilmsTableEmpty.observe(viewLifecycleOwner, Observer {
+                if(!flag && it==0) {
+                    binding.ivPersonalVideo.visibility = View.VISIBLE
+                    binding.tvPersonalVideo.visibility = View.VISIBLE
+                }
+            })
         }
     }
 
@@ -123,25 +131,11 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         moviesViewModel.moviesMediatorLiveData.observe(viewLifecycleOwner, Observer { it ->
             movieAdapter.addItems(it)
         })
-
         moviesViewModel.userMovies.observe(viewLifecycleOwner, Observer {
             if (!flag) {
                 moviesViewModel.getListOfMovieFromUserDatabase()
             }
         })
-
-        moviesViewModel.isUserFilmsTableEmpty.observe(viewLifecycleOwner, Observer {
-            if (!flag && it == 0) {
-                Toast.makeText(
-                    requireContext(),
-                    "Your movie collection is empty",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-
-        })
-
     }
 
     private fun initProgressBar() {

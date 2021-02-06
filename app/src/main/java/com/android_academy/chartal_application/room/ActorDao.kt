@@ -38,33 +38,4 @@ interface ActorDao {
         return list
     }
 
-
-
-
-
-
-
-
-
-/*    @Query("SELECT * FROM films")
-    fun getAll(): LiveData<List<Movie>>
-
-    @Query("SELECT * FROM films")
-    fun getAllExperiment(): List<Movie>
-
-    @Query("SELECT * FROM films WHERE title LIKE :title   LIMIT 1")
-    fun findByName(title: String): Movie
-
-    @Query("DELETE FROM films")
-    fun deleteAll()
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(films: List<Movie>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(film: Movie?): Long
-
-    @Query("SELECT 1 from films LIMIT 1")
-    fun isTableFilmsEmpty(): Int*/
-
 }

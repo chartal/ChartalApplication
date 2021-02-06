@@ -1,14 +1,15 @@
 package com.android_academy.chartal_application.details
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.android_academy.chartal_application.App
 import com.android_academy.chartal_application.data.Movie
+import com.android_academy.chartal_application.data.UserMovie
 import com.android_academy.chartal_application.repository.FilmsRepository
+import com.android_academy.chartal_application.room.AppDatabase
 import com.android_academy.chartal_application.util.IResProvider
 import com.android_academy.chartal_application.util.NetworkStatus
+import com.android_academy.chartal_application.util.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,17 +23,23 @@ class MoviesViewModel(
     private val networkStatus: NetworkStatus
 ) : ViewModel() {
 
-    private val _items = MutableLiveData<List<Movie>>()
-    val items: LiveData<List<Movie>> get() = _items
+    private val movies = MutableLiveData<List<Movie>>()
 
-    private val _movie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie> get() = _movie
-
-    private val _error = MutableLiveData<String>()
+    private val _error = SingleLiveEvent<String>()
     val error: LiveData<String> get() = _error
 
-    private val isProgressBarVisibleMutableLiveData = MutableLiveData<Boolean>()
+    private val isProgressBarVisibleMutableLiveData = SingleLiveEvent<Boolean>()
     val isProgressBarVisible: LiveData<Boolean> = isProgressBarVisibleMutableLiveData
+
+    val isUserFilmsTableEmpty: LiveData<Int> = AppDatabase.getDatabase(App.instance).filmUserDao().isUserFilmsTableEmpty()
+
+    val userMovies: LiveData<List<UserMovie>> =
+        AppDatabase.getDatabase(App.instance).filmUserDao().getAllExperiment()
+
+    private val moviesFromDatabase: LiveData<List<Movie>> =
+        AppDatabase.getDatabase(App.instance).filmDao().getAll()
+
+    val moviesMediatorLiveData: MediatorLiveData<List<Movie>> = MediatorLiveData()
 
     private var page: Int = 1
     private val myList = mutableListOf<Movie>()
@@ -41,6 +48,12 @@ class MoviesViewModel(
         get() = !networkStatus.internetConnectionStatus()
 
     init {
+        moviesMediatorLiveData.addSource(movies, Observer {
+            moviesMediatorLiveData.value = it
+        })
+        moviesMediatorLiveData.addSource(moviesFromDatabase, Observer {
+            moviesMediatorLiveData.value = it
+        })
         viewModelScope.launch {
             try {
                 if (internetNoAccess) {
@@ -58,7 +71,7 @@ class MoviesViewModel(
                             Log.d(LOG_TAG, "Loading data from a database")
                             myList.addAll(filmsRepository.getListOfFilmsFromCache())
                         }
-                        _items.postValue(myList)
+                        movies.postValue(myList)
                     }
                 } else {
                     Log.d(LOG_TAG, "There is  Internet access")
@@ -66,15 +79,14 @@ class MoviesViewModel(
                         if (!filmsRepository.isCacheEmpty()) {
                             Log.d(LOG_TAG, "Loading data from the cache")
                             myList.addAll(filmsRepository.getListOfFilmsFromCache())
-                            _items.postValue(myList)
+                            movies.postValue(myList)
                         }
                     }
                     Log.d(LOG_TAG, "Downloading data from the network")
                     myList.clear()
                     myList.addAll(filmsRepository.getListOfFilms(page))
-                    _items.postValue(myList)
+                    movies.postValue(myList)
                     Log.d(LOG_TAG, "Saving data to the cache")
-                    filmsRepository.clearCache()
                     filmsRepository.fillCache(myList)
                 }
             } catch (error: Throwable) {
@@ -85,14 +97,14 @@ class MoviesViewModel(
         }
     }
 
-    fun getSearchMovie(query: String) {
+    fun getSearchMovies(query: String) {
         pagination = false
         viewModelScope.launch {
             try {
                 isProgressBarVisibleMutableLiveData.value = true
                 myList.clear()
-                myList.addAll(filmsRepository.getListOfFilms2(query))
-                _items.value = myList
+                myList.addAll(filmsRepository.getSearchMovies(query))
+                movies.value = myList
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES
             } finally {
@@ -109,7 +121,7 @@ class MoviesViewModel(
             try {
                 isProgressBarVisibleMutableLiveData.value = true
                 myList.addAll(filmsRepository.getListOfFilms(page))
-                _items.value = myList
+                movies.value = myList
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES
             } finally {
@@ -125,7 +137,7 @@ class MoviesViewModel(
                 isProgressBarVisibleMutableLiveData.value = true
                 myList.clear()
                 myList.addAll(filmsRepository.getListOfFilmsFromUserDatabase())
-                _items.value = myList
+                movies.value = myList
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES
             } finally {
@@ -142,7 +154,7 @@ class MoviesViewModel(
                     try {
                         isProgressBarVisibleMutableLiveData.value = true
                         myList.addAll(filmsRepository.getListOfFilms(page))
-                        _items.value = myList
+                        movies.value = myList
                     } catch (error: Throwable) {
                         _error.value = ERROR_LOAD_MOVIES
                     } finally {

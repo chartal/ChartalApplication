@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.android_academy.chartal_application.R
@@ -32,8 +33,11 @@ class ActorAdapter() :
     }
 
     fun addItems(newItems: List<Actor>) {
+        val diffCallback = ActorDiffUtilCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        items.clear()
         items.addAll(newItems)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class ActorViewHolder(itemView: View, val context: Context) :
@@ -43,7 +47,9 @@ class ActorAdapter() :
         private val actorFullName = itemView.findViewById<TextView>(R.id.tv_full_actor_name)
 
         fun bind(actor: Actor) {
-            poster.load(actor.picture)
+            poster.load(actor.picture) {
+                placeholder(R.drawable.chartal_placeholder)
+            }
             actorFullName.text = actor.name
         }
     }

@@ -64,8 +64,9 @@
         android:layout_marginEnd="@dimen/search_view_margin"
         android:background="@drawable/corners"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_top"
-        app:layout_constraintStart_toEndOf="@id/tv_movies_list" />
+        app:layout_constraintTop_toTopOf="@id/iv_btn_to_bd"
+        app:layout_constraintBottom_toBottomOf="@id/iv_btn_to_bd"
+        app:layout_constraintStart_toEndOf="@id/iv_btn_to_bd" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movies"

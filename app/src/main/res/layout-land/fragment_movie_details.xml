@@ -74,6 +74,8 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:text="@string/movie_title"
+            android:ellipsize="end"
+            android:maxLines="2"
             android:textColor="@color/storyline"
             android:textSize="@dimen/tv_movie_title_text_size"
             android:textStyle="bold"
@@ -177,7 +179,6 @@
             app:layout_constraintStart_toEndOf="@+id/guideline_start"
             app:layout_constraintTop_toBottomOf="@+id/tv_cast"
             tools:listitem="@layout/actor_item" />
-
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_dialog"

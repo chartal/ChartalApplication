@@ -4,14 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.android_academy.chartal_application.data.Genre
+import com.android_academy.chartal_application.data.ActorDb
+import com.android_academy.chartal_application.data.ListId
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.data.UserMovie
 
-@Database(entities = [Movie::class, UserMovie::class], version = 1)
+@Database(entities = [Movie::class, UserMovie::class, ListId::class, ActorDb::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun filmDao(): FilmDao
+    abstract fun actorDao(): ActorDao
     abstract fun filmUserDao(): FilmUserDao
 
     companion object {

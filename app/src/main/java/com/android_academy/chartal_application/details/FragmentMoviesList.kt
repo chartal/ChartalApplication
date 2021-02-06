@@ -1,5 +1,6 @@
 package com.android_academy.chartal_application.details
 
+
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,17 +20,19 @@ import com.android_academy.chartal_application.repository.NetworkModule
 import com.android_academy.chartal_application.util.NetworkStatus
 import com.android_academy.chartal_application.util.ResProvider
 
+
 class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
     private val resProvider = ResProvider(App.instance)
     private val networkStatus = NetworkStatus(App.instance)
     private val moviesViewModel: MoviesViewModel by viewModels {
-        MoviesViewModelFactory(
+        MoviesListViewModelFactory(
             NetworkModule.filmsRepository,
             resProvider,
             networkStatus
         )
     }
+    var flag = true
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
@@ -42,6 +45,9 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (savedInstanceState != null) {
+            flag = savedInstanceState.getBoolean(BTN_FLAG)
+        }
         _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -61,21 +67,31 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         initErrorHandler()
         initProgressBar()
         loadFilms()
-        binding.searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
                 return true
             }
+
             override fun onQueryTextSubmit(query: String): Boolean {
-                moviesViewModel.getSearchMovie(query)
+                flag = true
+                moviesViewModel.getSearchMovies(query)
                 return true
             }
         })
         binding.tvMoviesList.setOnClickListener {
+            flag = true
             moviesViewModel.getDefaultList()
+
         }
         binding.ivBtnToBd.setOnClickListener {
+            flag = false
             moviesViewModel.getListOfMovieFromUserDatabase()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(BTN_FLAG, flag)
     }
 
     override fun onDestroyView() {
@@ -88,8 +104,8 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         listener = null
     }
 
-    override fun oItemClicked(movie: Movie) {
-        listener?.addFragmentMoviesDetails(movie)
+    override fun oItemClicked(movie: Movie, position: Int) {
+        listener?.addGalleryFragment(movie, movieAdapter.items, position, flag)
     }
 
     override fun onListScrolled() {
@@ -103,9 +119,29 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
     }
 
     private fun loadFilms() {
-        moviesViewModel.items.observe(viewLifecycleOwner, Observer {
+
+        moviesViewModel.moviesMediatorLiveData.observe(viewLifecycleOwner, Observer { it ->
             movieAdapter.addItems(it)
         })
+
+        moviesViewModel.userMovies.observe(viewLifecycleOwner, Observer {
+            if (!flag) {
+                moviesViewModel.getListOfMovieFromUserDatabase()
+            }
+        })
+
+        moviesViewModel.isUserFilmsTableEmpty.observe(viewLifecycleOwner, Observer {
+            if (!flag && it == 0) {
+                Toast.makeText(
+                    requireContext(),
+                    "Your movie collection is empty",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+
+        })
+
     }
 
     private fun initProgressBar() {
@@ -113,4 +149,9 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
             binding.progressBar.isVisible = it
         })
     }
+
+    companion object {
+        private const val BTN_FLAG = "FLAG"
+    }
+
 }

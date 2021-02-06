@@ -20,4 +20,6 @@
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">CANCEL</string>
     <string name="want_to_save">Want to save a movie to your favorites?</string>
+    <string name="want_to_delete">Want to delete a movie from your favorites?</string>
+
 </resources>

@@ -113,8 +113,8 @@ class FilmsRepository(
     suspend fun isCacheEmpty(): Boolean {
         return withContext(Dispatchers.IO) {
             when (dataBase.filmDao().isTableFilmsEmpty()) {
-                0 -> true
-                else -> false
+                1 -> false
+                else -> true
             }
         }
     }

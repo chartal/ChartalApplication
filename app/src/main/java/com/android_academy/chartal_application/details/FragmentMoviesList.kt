@@ -33,6 +33,7 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         )
     }
     var flag = true
+    private var isUserFilmsTableEmpty: Boolean = true
     private var _binding: FragmentMoviesListBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
@@ -44,9 +45,10 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         if (savedInstanceState != null) {
             flag = savedInstanceState.getBoolean(BTN_FLAG)
+            isUserFilmsTableEmpty = savedInstanceState.getBoolean(USER_FILM_TABLE_EMPTY)
         }
         _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
         return binding.root
@@ -74,6 +76,7 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 flag = true
+                hideInformEmptyUserTable()
                 moviesViewModel.getSearchMovies(query)
                 return true
             }
@@ -81,25 +84,21 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         binding.tvMoviesList.setOnClickListener {
             flag = true
             moviesViewModel.getDefaultList()
-            binding.ivPersonalVideo.visibility = View.INVISIBLE
-            binding.tvPersonalVideo.visibility = View.INVISIBLE
-
+            hideInformEmptyUserTable()
         }
         binding.ivBtnToBd.setOnClickListener {
             flag = false
             moviesViewModel.getListOfMovieFromUserDatabase()
-            moviesViewModel.isUserFilmsTableEmpty.observe(viewLifecycleOwner, Observer {
-                if(!flag && it==0) {
-                    binding.ivPersonalVideo.visibility = View.VISIBLE
-                    binding.tvPersonalVideo.visibility = View.VISIBLE
-                }
-            })
+            if (isUserFilmsTableEmpty) {
+                showInformEmptyUserTable()
+            }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putBoolean(BTN_FLAG, flag)
+        outState.putBoolean(USER_FILM_TABLE_EMPTY, isUserFilmsTableEmpty)
     }
 
     override fun onDestroyView() {
@@ -136,6 +135,16 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
                 moviesViewModel.getListOfMovieFromUserDatabase()
             }
         })
+        moviesViewModel.isUserFilmsTableEmpty.observe(viewLifecycleOwner, Observer {
+            isUserFilmsTableEmpty = when (it) {
+                1 -> false
+                else -> true
+            }
+        })
+
+        if(!flag && isUserFilmsTableEmpty) {
+            showInformEmptyUserTable()
+        }
     }
 
     private fun initProgressBar() {
@@ -144,8 +153,19 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         })
     }
 
+    private fun hideInformEmptyUserTable() {
+        binding.ivPersonalVideo.visibility = View.INVISIBLE
+        binding.tvPersonalVideo.visibility = View.INVISIBLE
+    }
+
+    private fun showInformEmptyUserTable() {
+        binding.ivPersonalVideo.visibility = View.VISIBLE
+        binding.tvPersonalVideo.visibility = View.VISIBLE
+    }
+
     companion object {
         private const val BTN_FLAG = "FLAG"
+        private const val USER_FILM_TABLE_EMPTY = "USER_FILM_TABLE_EMPTY"
     }
 
 }

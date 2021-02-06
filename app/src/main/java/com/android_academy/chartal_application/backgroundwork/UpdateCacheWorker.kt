@@ -16,7 +16,7 @@ class UpdateCacheWorker(context: Context, params: WorkerParameters): CoroutineWo
                 Log.d(LOG_TAG, "ConnectionChecker is online")
                     NetworkModule.filmsRepository.updateCash()
                     NetworkModule.filmsRepository.updateActorsCache()
-                    Log.d(LOG_TAG, "The cache has been updated")
+                    Log.d(LOG_TAG, "The cache has been updated by workManager")
                 return Result.success()
             }
         return Result.failure()

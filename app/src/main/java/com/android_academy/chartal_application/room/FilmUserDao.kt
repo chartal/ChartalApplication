@@ -28,7 +28,7 @@ interface FilmUserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(film: UserMovie?): Long
 
-    @Query("SELECT count(*) from userfilms")
+    @Query("SELECT 1 from userfilms LIMIT 1")
     fun isUserFilmsTableEmpty(): LiveData<Int>
 
     @Query("DELETE from userfilms WHERE id = :filmId")

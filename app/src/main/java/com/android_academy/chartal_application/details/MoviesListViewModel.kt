@@ -66,28 +66,16 @@ class MoviesViewModel(
                                 "The cache is empty, data will be loaded from the local JSON"
                             )
                             isProgressBarVisibleMutableLiveData.postValue(true)
-                            myList.addAll(resProvider.loadFilms())
-                        } else {
-                            Log.d(LOG_TAG, "Loading data from a database")
-                            myList.addAll(filmsRepository.getListOfFilmsFromCache())
+                            filmsRepository.fillCache(resProvider.loadFilms())
                         }
-                        movies.postValue(myList)
                     }
                 } else {
                     Log.d(LOG_TAG, "There is  Internet access")
-                    withContext(IO) {
-                        if (!filmsRepository.isCacheEmpty()) {
-                            Log.d(LOG_TAG, "Loading data from the cache")
-                            myList.addAll(filmsRepository.getListOfFilmsFromCache())
-                            movies.postValue(myList)
-                        }
+                    if (!filmsRepository.isCacheEmpty()) {
+                        myList.addAll(filmsRepository.getListOfFilmsFromCache())
                     }
-                    Log.d(LOG_TAG, "Downloading data from the network")
-                    myList.clear()
-                    myList.addAll(filmsRepository.getListOfFilms(page))
-                    movies.postValue(myList)
-                    Log.d(LOG_TAG, "Saving data to the cache")
-                    filmsRepository.fillCache(myList)
+                    filmsRepository.fillCache(filmsRepository.getListOfFilms(page))
+                    Log.d(LOG_TAG, "The cache has been updated")
                 }
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES

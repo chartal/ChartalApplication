@@ -9,16 +9,18 @@ import com.android_academy.chartal_application.repository.NetworkModule
 
 private const val LOG_TAG = "Chartal"
 
-class UpdateCacheWorker(context: Context, params: WorkerParameters): CoroutineWorker(context, params){
+class UpdateCacheWorker(context: Context, params: WorkerParameters) :
+    CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-            if(ConnectionChecker.isOnline()){
-                Log.d(LOG_TAG, "ConnectionChecker is online")
-                    NetworkModule.filmsRepository.updateCash()
-                    NetworkModule.filmsRepository.updateActorsCache()
-                    Log.d(LOG_TAG, "The cache has been updated by workManager")
-                return Result.success()
-            }
+        if (ConnectionChecker.isOnline()) {
+            Log.d(LOG_TAG, "ConnectionChecker is online")
+            val repository = NetworkModule.filmsRepository
+            repository.updateCash()
+            repository.updateActorsCache()
+            Log.d(LOG_TAG, "The cache has been updated by workManager")
+            return Result.success()
+        }
         return Result.failure()
     }
 }

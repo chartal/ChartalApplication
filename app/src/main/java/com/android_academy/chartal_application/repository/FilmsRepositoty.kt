@@ -154,7 +154,7 @@ class FilmsRepository(
         }
     }
 
-    suspend fun updateCach() {
+    suspend fun updateCache() {
         dataBase.filmDao().deleteAll()
         dataBase.filmDao().insertAll(getListOfFilms(1))
     }

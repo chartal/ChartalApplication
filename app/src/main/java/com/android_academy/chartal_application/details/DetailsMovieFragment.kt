@@ -13,23 +13,27 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import coil.load
+import com.android_academy.chartal_application.App
 import com.android_academy.chartal_application.R
 import com.android_academy.chartal_application.adapters.ActorAdapter
 import com.android_academy.chartal_application.data.Actor
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMovieDetailsBinding
 import com.android_academy.chartal_application.repository.NetworkModule
+import com.android_academy.chartal_application.util.NetworkStatus
 
 
-class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details), FragmentDialogDetails.onClickSaveListener {
+class DetailsMovieFragment() : Fragment(R.layout.fragment_movie_details),
+    DialogDatabaseFragment.IClickListener {
+    private val networkStatus = NetworkStatus(App.instance)
 
     private val detailsViewModel: DetailsViewModel by viewModels {
-        DetailsViewModelFactory(
-            NetworkModule.filmsRepository
+        DetailsMovieViewModelFactory(
+            NetworkModule.filmsRepository,
+            networkStatus
         )
     }
     private var movie: Movie? = null
-
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
     private var listener: TransactionsFragmentClicks? = null
@@ -74,8 +78,11 @@ class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details), Fragm
             }
             if (savedInstanceState == null) {
                 detailsViewModel.loadActors(it.id)
+            } else {
+                detailsViewModel.loadActorsFromCache(it.id)
             }
         }
+        val flag = this.arguments?.getBoolean(FLAG)
         detailsViewModel.actors.observe(viewLifecycleOwner, Observer { list ->
             loadActors(list)
             if (list.isEmpty()) {
@@ -84,15 +91,21 @@ class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details), Fragm
                 binding.tvCast.visibility = View.VISIBLE
             }
         })
-        detailsViewModel.trailerUrlMutableLiveData.observe(viewLifecycleOwner, Observer { trailer ->
+        detailsViewModel.trailerUrl.observe(viewLifecycleOwner, Observer { trailer ->
             openMovie(trailer)
         })
-        binding.fab?.setOnClickListener {
+        binding.fab.setOnClickListener {
             detailsViewModel.getTrailer(movieId)
         }
         initErrorHandler()
-        binding.btnDialog?.setOnClickListener {
-            val dialog = FragmentDialogDetails(listener = this)
+
+        if (flag!!) {
+            binding.btnDialog.setImageResource(R.drawable.ic_baseline_save_24)
+        } else {
+            binding.btnDialog.setImageResource(R.drawable.ic_baseline_delete_24)
+        }
+        binding.btnDialog.setOnClickListener {
+            val dialog = DialogDatabaseFragment.newInstance(flag)
             dialog.show(childFragmentManager, "FragmentDialogDetails")
         }
     }
@@ -105,6 +118,17 @@ class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details), Fragm
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    override fun saveData() {
+        Toast.makeText(context, "Movie saved in database", Toast.LENGTH_SHORT).show()
+        detailsViewModel.saveUserMovie(movie)
+    }
+
+    override fun deleteData() {
+        Toast.makeText(context, "The movie was deleted from the database", Toast.LENGTH_SHORT)
+            .show()
+        detailsViewModel.deleteUserMovie(movie)
     }
 
     private fun loadActors(myActors: List<Actor>) {
@@ -124,15 +148,12 @@ class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details), Fragm
 
     companion object {
         private const val ARGS_MOVIE = "ARGS_MOVIE"
-        fun newInstance(movie: Movie): FragmentMoviesDetails {
-            return FragmentMoviesDetails().apply {
-                arguments = bundleOf(ARGS_MOVIE to movie)
+        private const val FLAG = "BTN_FLAG"
+        fun newInstance(movie: Movie, flag: Boolean): DetailsMovieFragment {
+            return DetailsMovieFragment().apply {
+                arguments = bundleOf(ARGS_MOVIE to movie, FLAG to flag)
             }
         }
     }
 
-    override fun saveData() {
-        Toast.makeText(context, "Movie saved in database", Toast.LENGTH_SHORT).show()
-        detailsViewModel.saveUserMovie(movie)
-    }
 }

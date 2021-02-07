@@ -1,5 +1,6 @@
 package com.android_academy.chartal_application.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -10,7 +11,7 @@ import com.android_academy.chartal_application.data.Movie
 interface FilmDao {
 
     @Query("SELECT * FROM films")
-    fun getAll(): List<Movie>
+    fun getAll(): LiveData<List<Movie>>
 
     @Query("SELECT * FROM films")
     fun getAllExperiment(): List<Movie>
@@ -28,6 +29,6 @@ interface FilmDao {
     fun insert(film: Movie?): Long
 
     @Query("SELECT 1 from films LIMIT 1")
-    fun isDatabaseEmpty(): Int
+    fun isTableFilmsEmpty(): Int
 
 }

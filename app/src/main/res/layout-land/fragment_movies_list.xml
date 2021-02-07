@@ -64,8 +64,9 @@
         android:layout_marginEnd="@dimen/search_view_margin"
         android:background="@drawable/corners"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_top"
-        app:layout_constraintStart_toEndOf="@id/tv_movies_list" />
+        app:layout_constraintTop_toTopOf="@id/iv_btn_to_bd"
+        app:layout_constraintBottom_toBottomOf="@id/iv_btn_to_bd"
+        app:layout_constraintStart_toEndOf="@id/iv_btn_to_bd" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movies"
@@ -89,5 +90,31 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical_start"
         app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_top" />
+
+    <ImageView
+        android:id="@+id/iv_personal_video"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_baseline_personal_video_24"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_start"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_top" />
+
+    <TextView
+        android:id="@+id/tv_personal_video"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="@string/collection_is_empty"
+        android:textColor="@color/movie_details"
+        android:textSize="@dimen/tv_personal_video_text_size"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_start"
+        app:layout_constraintTop_toBottomOf="@+id/iv_personal_video"
+        tools:text="Your movie collection is empty. You can always add the selected movie to your collection." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

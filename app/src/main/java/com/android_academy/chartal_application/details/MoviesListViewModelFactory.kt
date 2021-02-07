@@ -6,7 +6,7 @@ import com.android_academy.chartal_application.repository.FilmsRepository
 import com.android_academy.chartal_application.util.IResProvider
 import com.android_academy.chartal_application.util.NetworkStatus
 
-class MoviesViewModelFactory(
+class MoviesListViewModelFactory(
     private val filmsRepository: FilmsRepository,
     private val resProvider: IResProvider,
     private val networkStatus: NetworkStatus

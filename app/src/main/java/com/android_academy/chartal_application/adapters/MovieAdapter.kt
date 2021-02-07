@@ -1,11 +1,14 @@
 package com.android_academy.chartal_application.adapters
 
+
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.android_academy.chartal_application.R
@@ -15,7 +18,7 @@ import com.android_academy.chartal_application.data.Movie
 class MovieAdapter(private val clickListener: Listener) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
-    private val items = mutableListOf<Movie>()
+    val items = mutableListOf<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view =
@@ -35,13 +38,15 @@ class MovieAdapter(private val clickListener: Listener) :
     }
 
     fun addItems(newItems: List<Movie>) {
+        val diffCallback = MovieDiffUtilCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         items.clear()
         items.addAll(newItems)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     interface Listener {
-        fun oItemClicked(movie: Movie)
+        fun oItemClicked(movie: Movie, position: Int)
         fun onListScrolled()
     }
 
@@ -60,7 +65,7 @@ class MovieAdapter(private val clickListener: Listener) :
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    clickListener.oItemClicked(items[position])
+                    clickListener.oItemClicked(items[position], position)
                 }
             }
         }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.ActivityMainBinding
-import com.android_academy.chartal_application.details.FragmentMoviesDetails
+import com.android_academy.chartal_application.viewpager.GalleryFragment
 import com.android_academy.chartal_application.details.TransactionsFragmentClicks
 
 
@@ -18,10 +18,10 @@ class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
         setContentView(binding.root)
     }
 
-    override fun addFragmentMoviesDetails(movie: Movie) {
+    override fun  addGalleryFragment(movie: Movie, movies: List<Movie>, position: Int, flag: Boolean) {
         supportFragmentManager
             .beginTransaction()
-            .replace(android.R.id.content, FragmentMoviesDetails.newInstance(movie))
+            .replace(android.R.id.content, GalleryFragment.newInstance(movies, position, flag))
             .addToBackStack(null)
             .commit()
     }

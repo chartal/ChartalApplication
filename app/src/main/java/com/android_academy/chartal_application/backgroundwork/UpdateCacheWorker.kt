@@ -16,7 +16,7 @@ class UpdateCacheWorker(context: Context, params: WorkerParameters) :
         if (ConnectionChecker.isOnline()) {
             Log.d(LOG_TAG, "ConnectionChecker is online")
             val repository = NetworkModule.filmsRepository
-            repository.updateCash()
+            repository.updateCach()
             repository.updateActorsCache()
             Log.d(LOG_TAG, "The cache has been updated by workManager")
             return Result.success()

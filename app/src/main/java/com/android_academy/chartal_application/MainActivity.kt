@@ -3,13 +3,16 @@ package com.android_academy.chartal_application
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.ActivityMainBinding
 import com.android_academy.chartal_application.details.DetailsMovieFragment
 import com.android_academy.chartal_application.details.TransactionsFragmentClicks
 import com.android_academy.chartal_application.repository.NetworkModule
 import com.android_academy.chartal_application.viewpager.GalleryFragment
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
@@ -18,11 +21,6 @@ class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
-    private var scope = CoroutineScope(
-        SupervisorJob() +
-                Dispatchers.IO +
-                exceptionHandler
-    )
     private val repository = NetworkModule.filmsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,17 +56,12 @@ class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        scope.cancel()
-    }
-
     private fun handleIntent(intent: Intent) {
         when (intent.action) {
             Intent.ACTION_VIEW -> {
                 val id = intent.data?.lastPathSegment?.toIntOrNull()
                 if (id != null) {
-                    scope.launch {
+                    lifecycleScope.launch(Dispatchers.IO + exceptionHandler) {
                         val movie = repository.findMovieById(id)
                         supportFragmentManager
                             .beginTransaction()

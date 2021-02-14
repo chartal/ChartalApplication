@@ -35,6 +35,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:maxImageSize="@dimen/fab_max_image_size" />
 
+        <ImageView
+            android:id="@+id/btn_permission"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="@dimen/tv_back_margin_start"
+            android:layout_marginTop="@dimen/tv_back_margin_top"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/ripple_effect"
+            android:src="@drawable/ic_baseline_access_alarm_24"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
             android:id="@+id/tv_back"
             android:layout_width="wrap_content"

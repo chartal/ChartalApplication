@@ -19,6 +19,9 @@ interface FilmDao {
     @Query("SELECT * FROM films WHERE title LIKE :title   LIMIT 1")
     fun findByName(title: String): Movie
 
+    @Query("SELECT * FROM films WHERE id LIKE :id   LIMIT 1")
+    fun findMovieById(id: Int): Movie
+
     @Query("DELETE FROM films")
     fun deleteAll()
 

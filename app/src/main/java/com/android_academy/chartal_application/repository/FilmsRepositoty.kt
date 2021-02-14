@@ -159,6 +159,10 @@ class FilmsRepository(
         dataBase.filmDao().insertAll(getListOfFilms(1))
     }
 
+    suspend fun findMovieById(id: Int): Movie {
+        return dataBase.filmDao().findMovieById(id)
+    }
+
     companion object {
         private const val BASE_POSTER_URL_PROFILE = "http://image.tmdb.org/t/p/w185"
         private const val BASE_URL_YOUTUBE = "https://www.youtube.com/watch?v="

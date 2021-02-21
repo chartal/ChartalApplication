@@ -8,17 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.android_academy.chartal_application.App
+import com.android_academy.chartal_application.R
 import com.android_academy.chartal_application.adapters.MovieAdapter
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.FragmentMoviesListBinding
 import com.android_academy.chartal_application.notification.NewMovieChecker
 import com.android_academy.chartal_application.repository.NetworkModule
-import com.android_academy.chartal_application.util.*
+import com.android_academy.chartal_application.util.NetworkStatus
+import com.android_academy.chartal_application.util.ResProvider
+import com.google.android.material.transition.Hold
+import com.google.android.material.transition.MaterialElevationScale
 
 
 class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
@@ -44,6 +49,16 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
         MovieAdapter(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = MaterialElevationScale(false).apply{
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+        reenterTransition = MaterialElevationScale(true).apply{
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,6 +81,8 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
         binding.rvMovies.apply {
             adapter = movieAdapter
         }
@@ -145,7 +162,7 @@ class FragmentMoviesList : Fragment(), MovieAdapter.Listener {
             }
         })
 
-        if(!flag && isUserFilmsTableEmpty) {
+        if (!flag && isUserFilmsTableEmpty) {
             showInformEmptyUserTable()
         }
     }

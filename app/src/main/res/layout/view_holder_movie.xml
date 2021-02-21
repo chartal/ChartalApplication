@@ -8,6 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:transitionName="@{@string/view_holder_movie_transition_name(movie.id)}"
     android:padding="@dimen/card_view_movie_padding">
 
     <androidx.cardview.widget.CardView

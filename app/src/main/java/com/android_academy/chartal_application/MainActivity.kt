@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.databinding.ActivityMainBinding
+import com.android_academy.chartal_application.databinding.ViewHolderMovieBinding
 import com.android_academy.chartal_application.details.DetailsMovieFragment
 import com.android_academy.chartal_application.details.TransactionsFragmentClicks
 import com.android_academy.chartal_application.repository.NetworkModule
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bindingItem: ViewHolderMovieBinding
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, exception ->
         println("CoroutineExceptionHandler got $exception in $coroutineContext")
     }
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        bindingItem = ViewHolderMovieBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (savedInstanceState == null) {
             intent?.let(::handleIntent)
@@ -38,9 +41,13 @@ class MainActivity : AppCompatActivity(), TransactionsFragmentClicks {
         position: Int,
         flag: Boolean
     ) {
+        val galleryMoviesDetailTransitionName = getString(R.string.fragment_gallery_transition_name)
+        val itemMovie = bindingItem.itemMovie
         supportFragmentManager
             .beginTransaction()
+            .setReorderingAllowed(true)
             .replace(android.R.id.content, GalleryFragment.newInstance(movies, position, flag))
+            .addSharedElement(itemMovie, galleryMoviesDetailTransitionName)
             .addToBackStack(null)
             .commit()
     }

@@ -27,6 +27,8 @@
     <string name="new_movie_in_the_database">New movie in the database</string>
     <string name="movie_with_highest_rating"> Movie with highest rating</string>
     <string name="Do_you_wanna_to_schedule">Do you wanna to schedule a movie viewing?</string>
+    <string name="fragment_gallery_transition_name">fragment gallery transition name</string>
+    <string name="fragment_details_transition_name">fragment details transition name</string>
 
 
 

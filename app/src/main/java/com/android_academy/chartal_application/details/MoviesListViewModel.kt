@@ -5,11 +5,10 @@ import androidx.lifecycle.*
 import com.android_academy.chartal_application.App
 import com.android_academy.chartal_application.data.Movie
 import com.android_academy.chartal_application.data.UserMovie
+import com.android_academy.chartal_application.notification.NewMovieChecker
 import com.android_academy.chartal_application.repository.FilmsRepository
 import com.android_academy.chartal_application.room.AppDatabase
-import com.android_academy.chartal_application.util.IResProvider
-import com.android_academy.chartal_application.util.NetworkStatus
-import com.android_academy.chartal_application.util.SingleLiveEvent
+import com.android_academy.chartal_application.util.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,7 +19,8 @@ private const val LOG_TAG = "Chartal"
 class MoviesViewModel(
     private val filmsRepository: FilmsRepository,
     private val resProvider: IResProvider,
-    private val networkStatus: NetworkStatus
+    private val networkStatus: NetworkStatus,
+    private val newMovieChecker: NewMovieChecker
 ) : ViewModel() {
 
     private val movies = MutableLiveData<List<Movie>>()
@@ -31,7 +31,8 @@ class MoviesViewModel(
     private val isProgressBarVisibleMutableLiveData = SingleLiveEvent<Boolean>()
     val isProgressBarVisible: LiveData<Boolean> = isProgressBarVisibleMutableLiveData
 
-    val isUserFilmsTableEmpty: LiveData<Int> = AppDatabase.getDatabase(App.instance).filmUserDao().isUserFilmsTableEmpty()
+    val isUserFilmsTableEmpty: LiveData<Int> =
+        AppDatabase.getDatabase(App.instance).filmUserDao().isUserFilmsTableEmpty()
 
     val userMovies: LiveData<List<UserMovie>> =
         AppDatabase.getDatabase(App.instance).filmUserDao().getAllExperiment()
@@ -76,6 +77,7 @@ class MoviesViewModel(
                     }
                     filmsRepository.fillCache(filmsRepository.getListOfFilms(page))
                     Log.d(LOG_TAG, "The cache has been updated")
+                    showNotification()
                 }
             } catch (error: Throwable) {
                 _error.value = ERROR_LOAD_MOVIES
@@ -152,4 +154,11 @@ class MoviesViewModel(
             }
         }
     }
+
+    private fun showNotification() {
+        viewModelScope.launch(IO) {
+            newMovieChecker.showNotification()
+        }
+    }
+
 }
